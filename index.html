@@ -4,19 +4,21 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sriracha&family=IBM+Plex+Sans+Thai+Looped:wght@400;500;600&display=swap">
 <style>
-  /* Layout: short letter-style header, then a glass jar of paper stars beside the unfolded paper strip; stacks on phones. */
+  /* Layout: one phone-width column (jar, unfolded strip, 10x10 star collection) with the main action pinned to the bottom for the thumb. */
   :root {
     --sky: #EAF0F6;
     --surface: #F7F9FC;
     --ink: #1E2640;
     --muted: #59637E;
+    --line: #C9D5E6;
     --glass: rgba(140, 170, 210, 0.16);
     --glass-line: #9FB3CF;
-    --glow: rgba(246, 201, 69, 0.22);
+    --glow: rgba(246, 201, 69, 0.24);
     --accent: #3D5A99;
     --on-accent: #FFFFFF;
     --lid: #3D5A99;
     --lid-band: #5B79B8;
+    --dim-star: #CBD5E3;
     --paper-ink: #232A3F;
     --paper-plain: #FBF6E4;
     --p1: #F6C945;
@@ -33,6 +35,7 @@
       --surface: #182139;
       --ink: #E8ECF6;
       --muted: #A3ADC8;
+      --line: #2B3756;
       --glass: rgba(160, 190, 235, 0.08);
       --glass-line: #4E6290;
       --glow: rgba(246, 201, 69, 0.14);
@@ -40,6 +43,7 @@
       --on-accent: #10172A;
       --lid: #34508C;
       --lid-band: #4A69AD;
+      --dim-star: #2E3A5A;
       color-scheme: dark;
     }
   }
@@ -48,6 +52,7 @@
     --surface: #182139;
     --ink: #E8ECF6;
     --muted: #A3ADC8;
+    --line: #2B3756;
     --glass: rgba(160, 190, 235, 0.08);
     --glass-line: #4E6290;
     --glow: rgba(246, 201, 69, 0.14);
@@ -55,6 +60,7 @@
     --on-accent: #10172A;
     --lid: #34508C;
     --lid-band: #4A69AD;
+    --dim-star: #2E3A5A;
     color-scheme: dark;
   }
 
@@ -63,79 +69,65 @@
     color: var(--ink);
     font-family: var(--font-body);
     font-size: 1rem;
-    line-height: 1.75;
+    line-height: 1.7;
+    -webkit-tap-highlight-color: transparent;
   }
   .page {
-    max-width: 62rem;
+    max-width: 28rem;
     margin: 0 auto;
     padding-left: max(16px, env(safe-area-inset-left, 0px));
     padding-right: max(16px, env(safe-area-inset-right, 0px));
-    padding-block: 3rem 2.5rem;
+    padding-block: 1.75rem calc(6rem + env(safe-area-inset-bottom, 0px));
     display: grid;
-    gap: 2.5rem;
+    gap: 1.75rem;
   }
 
-  header { display: grid; gap: 0.5rem; max-width: 40rem; }
-  .eyebrow {
-    font-size: 0.8rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    color: var(--muted);
-  }
+  header { display: grid; gap: 0.35rem; }
+  .eyebrow { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; color: var(--muted); }
   h1 {
     font-family: var(--font-display);
     font-weight: 400;
-    font-size: clamp(2.4rem, 7vw, 4rem);
-    line-height: 1.2;
+    font-size: clamp(2rem, 9vw, 2.75rem);
+    line-height: 1.25;
     margin: 0;
     text-wrap: balance;
   }
   h1 .name { color: var(--accent); }
-  .lead { margin: 0; color: var(--muted); font-size: 1.05rem; max-width: 34rem; }
-
-  .stage {
-    display: grid;
-    grid-template-columns: minmax(0, 22rem) minmax(0, 1fr);
-    gap: 3rem;
-    align-items: center;
-  }
+  .lead { margin: 0; color: var(--muted); }
 
   /* Jar */
-  .jar-wrap {
+  .jar-area { display: grid; justify-items: center; gap: 0.25rem; }
+  .jar {
     position: relative;
-    width: 100%;
-    max-width: 22rem;
-    margin: 0 auto;
+    width: min(62vw, 15rem);
+    max-width: 100%;
     aspect-ratio: 200 / 260;
-  }
-  .jar-wrap::before {
-    content: "";
-    position: absolute;
-    inset: 20% -10% -2%;
-    background: radial-gradient(closest-side, var(--glow), transparent);
-    z-index: 0;
-  }
-  .jar-svg { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
-  .jar-svg .glass { fill: var(--glass); stroke: var(--glass-line); stroke-width: 2.5; }
-  .jar-svg .shine { fill: none; stroke: var(--surface); stroke-width: 5; stroke-linecap: round; opacity: 0.7; }
-  .jar-svg .lid { fill: var(--lid); }
-  .jar-svg .lid-band { fill: var(--lid-band); }
-  .stars { position: absolute; inset: 0; z-index: 2; }
-
-  .star-btn {
-    position: absolute;
-    width: 17%;
-    aspect-ratio: 1;
     padding: 0;
     border: 0;
     background: none;
     cursor: pointer;
-    border-radius: 50%;
-    transform: rotate(var(--rot));
-    transition: transform 0.2s ease;
+    border-radius: 1.5rem;
+    touch-action: manipulation;
   }
-  .star-btn:hover { transform: rotate(var(--rot)) scale(1.12); }
-  .star-btn:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+  .jar:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
+  .jar:active .jar-inner { transform: rotate(-3deg) scale(0.98); }
+  .jar-inner { position: absolute; inset: 0; transition: transform 0.15s ease; }
+  .jar-inner::before {
+    content: "";
+    position: absolute;
+    inset: 20% -12% -4%;
+    background: radial-gradient(closest-side, var(--glow), transparent);
+  }
+  .jar-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .jar-svg .glass { fill: var(--glass); stroke: var(--glass-line); stroke-width: 2.5; }
+  .jar-svg .shine { fill: none; stroke: var(--surface); stroke-width: 5; stroke-linecap: round; opacity: 0.7; }
+  .jar-svg .lid { fill: var(--lid); }
+  .jar-svg .lid-band { fill: var(--lid-band); }
+  .pile { position: absolute; inset: 0; }
+  .pile .star { position: absolute; width: 17%; height: auto; aspect-ratio: 1; transform: rotate(var(--rot)); }
+  .jar-caption { font-size: 0.9rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .jar-caption b { color: var(--ink); font-weight: 600; }
+
   .star {
     display: block;
     width: 100%;
@@ -144,28 +136,24 @@
       radial-gradient(circle at 38% 32%, rgba(255, 255, 255, 0.55), transparent 45%),
       var(--c);
     clip-path: polygon(50% 2%, 62% 36%, 98% 37%, 69% 59%, 80% 95%, 50% 74%, 20% 95%, 31% 59%, 2% 37%, 38% 36%);
-    filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.12));
   }
-  .star-btn.read .star { opacity: 0.38; }
-  .star-btn.current .star { opacity: 1; }
-  .star-btn.current { transform: rotate(var(--rot)) scale(1.18); }
 
   /* Paper strip */
-  .reader { display: grid; gap: 1.25rem; min-width: 0; }
+  .reader { display: grid; gap: 0.75rem; scroll-margin-top: 1rem; }
   .strip {
     position: relative;
     background: var(--paper, var(--paper-plain));
     color: var(--paper-ink);
-    padding: 1.75rem 1.75rem 1.5rem;
+    padding: 1.25rem 1.25rem 1.1rem;
     border-radius: 3px;
     box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06), 0 10px 24px -14px rgba(20, 30, 60, 0.45);
     transform-origin: left center;
-    min-height: 9.5rem;
+    min-height: 10.5rem;
     display: grid;
     align-content: center;
-    gap: 0.5rem;
+    gap: 0.4rem;
+    touch-action: pan-y;
   }
-  /* Fold creases left from the folded star */
   .strip::after {
     content: "";
     position: absolute;
@@ -174,92 +162,169 @@
     pointer-events: none;
     border-radius: inherit;
   }
-  .strip.unfold { animation: unfold 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); }
+  .strip.unfold { animation: unfold 0.45s cubic-bezier(0.2, 0.8, 0.2, 1); }
   @keyframes unfold {
     from { transform: scaleX(0.15) rotate(-2deg); opacity: 0.4; }
     to { transform: none; opacity: 1; }
   }
-  .strip-label { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.06em; opacity: 0.7; }
+  .strip-label { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.06em; opacity: 0.7; font-variant-numeric: tabular-nums; }
   .strip-text {
     font-family: var(--font-display);
-    font-size: clamp(1.3rem, 3.2vw, 1.65rem);
+    font-size: clamp(1.25rem, 5.6vw, 1.5rem);
     line-height: 1.55;
     margin: 0;
     text-wrap: pretty;
   }
 
-  .controls { display: flex; flex-wrap: wrap; gap: 0.75rem 1.25rem; align-items: center; }
-  .btn {
-    font: 600 0.95rem/1 var(--font-body);
-    padding: 0.85rem 1.3rem;
+  .nav { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 0.5rem; }
+  .nav-btn {
+    font: 500 0.95rem/1 var(--font-body);
+    min-height: 2.75rem;
+    padding: 0 0.9rem;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--ink);
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+  .nav-btn:first-child { justify-self: start; }
+  .nav-btn:last-child { justify-self: end; }
+  .nav-btn:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+  .swipe-hint { font-size: 0.78rem; color: var(--muted); text-align: center; }
+
+  .progress { display: grid; gap: 0.4rem; }
+  .progress-row { display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .progress-row b { color: var(--ink); font-weight: 600; }
+  .bar { height: 0.45rem; border-radius: 999px; background: var(--line); overflow: hidden; }
+  .bar span { display: block; height: 100%; width: 0; background: var(--p1); border-radius: inherit; transition: width 0.3s ease; }
+
+  /* Collection */
+  .collection { display: grid; gap: 0.6rem; }
+  h2 { font-family: var(--font-display); font-weight: 400; font-size: 1.4rem; margin: 0; }
+  .collection p { margin: 0; color: var(--muted); font-size: 0.9rem; }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(10, minmax(0, 1fr));
+    gap: 2px;
+    padding: 0.5rem;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 0.9rem;
+  }
+  .cell {
+    aspect-ratio: 1;
+    padding: 18%;
+    border: 0;
+    border-radius: 0.5rem;
+    background: none;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+  .cell .star { --c: var(--dim-star); background: var(--c); }
+  .cell.read .star { --c: var(--paper); background: radial-gradient(circle at 38% 32%, rgba(255, 255, 255, 0.55), transparent 45%), var(--c); }
+  .cell.current { background: var(--sky); box-shadow: inset 0 0 0 2px var(--accent); }
+  .cell:focus-visible { outline: 3px solid var(--accent); outline-offset: 1px; }
+
+  footer {
+    border-top: 1px dashed var(--glass-line);
+    padding-top: 1rem;
+    color: var(--muted);
+    display: grid;
+    gap: 0.25rem;
+  }
+  footer .sign { font-family: var(--font-display); font-size: 1.2rem; color: var(--ink); }
+
+  /* Thumb bar */
+  .dock {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 5;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 0.75rem calc(0.75rem + env(safe-area-inset-bottom, 0px));
+    background: var(--sky);
+    border-top: 1px solid var(--line);
+  }
+  .dock .btn {
+    display: block;
+    width: 100%;
+    max-width: 28rem;
+    margin: 0 auto;
+    font: 600 1.05rem/1 var(--font-body);
+    min-height: 3.25rem;
     border-radius: 999px;
     border: 0;
     background: var(--accent);
     color: var(--on-accent);
     cursor: pointer;
+    touch-action: manipulation;
   }
-  .btn:hover { filter: brightness(1.08); }
-  .btn:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
-  .count { color: var(--muted); font-size: 0.92rem; font-variant-numeric: tabular-nums; }
-  .count b { color: var(--ink); font-weight: 600; }
+  .dock .btn:active { filter: brightness(0.95); }
+  .dock .btn:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
 
-  footer {
-    border-top: 1px dashed var(--glass-line);
-    padding-top: 1.25rem;
-    color: var(--muted);
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 0.5rem 1.5rem;
-  }
-  footer .sign { font-family: var(--font-display); font-size: 1.2rem; color: var(--ink); }
-
-  @media (max-width: 720px) {
-    .page { padding-block: 2rem; gap: 2rem; }
-    .stage { grid-template-columns: minmax(0, 1fr); gap: 2rem; }
-    .jar-wrap { max-width: 17rem; }
-  }
   @media (prefers-reduced-motion: reduce) {
     .strip.unfold { animation: none; }
-    .star-btn { transition: none; }
+    .jar-inner, .bar span { transition: none; }
   }
 </style>
 
 <div class="page">
   <header>
-    <div class="eyebrow">โหลดาวกระดาษ · พับไว้ 16 ดวง</div>
+    <div class="eyebrow">โหลดาวกระดาษ · พับไว้ 100 ดวง</div>
     <h1>สู้ ๆ นะ น้อง <span class="name">Chertam</span></h1>
-    <p class="lead">ในโหลนี้มีดาวกระดาษ 16 ดวง แต่ละดวงมีข้อความเขียนไว้ข้างใน กดที่ดาวเพื่ออ่านทีละดวงนะหนู </p>
+    <p class="lead">ในโหลนี้มีดาวกระดาษ 100 ดวง แต่ละดวงมีข้อความเขียนไว้ข้างใน แตะที่โหลเพื่อหยิบดาวมาอ่านทีละดวงนะหนู</p>
   </header>
 
-  <main class="stage">
-    <div class="jar-wrap">
-      <svg class="jar-svg" viewBox="0 0 200 260" aria-hidden="true">
-        <path class="glass" d="M62 42 L62 56 Q20 70 20 112 L20 226 Q20 250 46 250 L154 250 Q180 250 180 226 L180 112 Q180 70 138 56 L138 42 Z"/>
-        <path class="shine" d="M34 120 Q34 92 52 80"/>
-        <path class="shine" d="M34 140 L34 200"/>
-        <rect class="lid" x="54" y="14" width="92" height="30" rx="7"/>
-        <rect class="lid-band" x="54" y="24" width="92" height="7"/>
-      </svg>
-      <div class="stars" id="stars" role="group" aria-label="ดาวกระดาษในโหล"></div>
-    </div>
+  <section class="jar-area">
+    <button class="jar" id="jar" type="button" aria-label="หยิบดาวจากโหล 1 ดวง">
+      <span class="jar-inner">
+        <svg class="jar-svg" viewBox="0 0 200 260" aria-hidden="true">
+          <path class="glass" d="M62 42 L62 56 Q20 70 20 112 L20 226 Q20 250 46 250 L154 250 Q180 250 180 226 L180 112 Q180 70 138 56 L138 42 Z"/>
+          <path class="shine" d="M34 120 Q34 92 52 80"/>
+          <path class="shine" d="M34 140 L34 200"/>
+          <rect class="lid" x="54" y="14" width="92" height="30" rx="7"/>
+          <rect class="lid-band" x="54" y="24" width="92" height="7"/>
+        </svg>
+        <span class="pile" id="pile" aria-hidden="true"></span>
+      </span>
+    </button>
+    <div class="jar-caption" id="jar-caption">เหลือในโหล <b>100</b> ดวง</div>
+  </section>
 
-    <section class="reader" aria-live="polite">
-      <div class="strip" id="strip">
-        <div class="strip-label" id="strip-label">เริ่มตรงนี้</div>
-        <p class="strip-text" id="strip-text">กดดาวในโหลได้เลย ข้างในมีข้อความรออยู่</p>
-      </div>
-      <div class="controls">
-        <button class="btn" id="random" type="button">สุ่มดาวที่ยังไม่ได้อ่าน</button>
-        <span class="count" id="count">คลี่แล้ว <b>0</b> / 16 ดวง</span>
-      </div>
-    </section>
-  </main>
+  <section class="reader" id="reader" aria-live="polite">
+    <div class="strip" id="strip">
+      <div class="strip-label" id="strip-label">เริ่มตรงนี้</div>
+      <p class="strip-text" id="strip-text">แตะที่โหล หรือกดปุ่มด้านล่าง เพื่อหยิบดาวดวงแรกได้เลย</p>
+    </div>
+    <div class="nav">
+      <button class="nav-btn" id="prev" type="button">‹ ก่อนหน้า</button>
+      <span class="swipe-hint">ปัดซ้ายขวาได้</span>
+      <button class="nav-btn" id="next" type="button">ถัดไป ›</button>
+    </div>
+  </section>
+
+  <section class="progress">
+    <div class="progress-row"><span id="count">อ่านแล้ว <b>0</b> / 100 ดวง</span><span id="percent">0%</span></div>
+    <div class="bar"><span id="bar"></span></div>
+  </section>
+
+  <section class="collection">
+    <h2>สมุดสะสมดาว</h2>
+    <p>ดาวที่อ่านแล้วจะมีสี แตะดวงไหนก็เปิดอ่านดวงนั้นได้</p>
+    <div class="grid" id="grid" role="group" aria-label="ดาวทั้ง 100 ดวง"></div>
+  </section>
 
   <footer>
     <span class="sign">จากพี่แปม ที่เป็นกำลังใจให้เสมอ</span>
     <span>เหนื่อยเมื่อไหร่ กลับมาเปิดโหลนี้ได้ทุกเมื่อ</span>
   </footer>
+</div>
+
+<div class="dock">
+  <button class="btn" id="draw" type="button">หยิบดาวจากโหล 1 ดวง</button>
 </div>
 
 <script>
@@ -279,75 +344,201 @@
     "ลองนึกดูสิ เรื่องยาก ๆ ที่ผ่านมา หนูก็ผ่านมาได้ตั้งหลายเรื่องแล้ว",
     "ภูมิใจในตัวเองบ้างนะ วันนี้ก็สู้มาทั้งวันแล้ว",
     "ยิ้มทีไร โลกสว่างขึ้นทุกที",
-    "ไม่ว่าผลจะออกมาเป็นยังไง ก็ยังเป็นคนเก่งของพี่เสมอ"
+    "ไม่ว่าผลจะออกมาเป็นยังไง ก็ยังเป็นคนเก่งของพี่เสมอ",
+    "หนูไม่จำเป็นต้องเก่งทุกเรื่อง แค่เป็นตัวเองก็พอแล้ว",
+    "พักก่อนก็ได้นะ ไม่มีใครวิ่งได้ตลอดเวลาหรอก",
+    "วันนี้อาจยาก แต่หนูก็ยังอยู่ตรงนี้ เก่งมากแล้ว",
+    "ค่อย ๆ ไปทีละก้าว ช้าแต่ไม่หยุด ก็ถึงเหมือนกัน",
+    "ดื่มน้ำ กินข้าว นอนให้พอ แค่นี้ก็ดูแลตัวเองได้ดีมากแล้ว",
+    "ความพยายามของวันนี้ จะกลายเป็นความภูมิใจของวันหน้า",
+    "ผิดพลาดได้ ไม่เป็นไรเลย ทุกคนก็เรียนรู้จากตรงนั้นทั้งนั้น",
+    "พี่ชอบเวลาที่หนูหัวเราะที่สุดเลย",
+    "เรื่องที่กังวลอยู่ตอนนี้ วันหนึ่งจะกลายเป็นเรื่องเล่าขำ ๆ",
+    "หนูไม่ได้ช้า หนูแค่กำลังไปตามจังหวะของตัวเอง",
+    "อย่าเอาตัวเองไปเทียบกับใคร ทุกคนมีเส้นทางของตัวเอง",
+    "ถ้าหนักเกินไป แบ่งมาให้พี่ช่วยถือบ้างนะ",
+    "ทุกครั้งที่หนูไม่ยอมแพ้ พี่เห็นนะ",
+    "หายใจเข้าลึก ๆ แล้วค่อย ๆ หายใจออก หนูทำได้",
+    "เก่งหรือไม่เก่ง ไม่สำคัญเท่ากับหนูมีความสุขหรือเปล่า",
+    "หนูคือpositive energy ให้หลาย ๆ คนโดยไม่รู้ตัวเลย",
+    "หนูมีค่ามาก ไม่ว่าวันนี้จะทำได้มากหรือน้อยแค่ไหน",
+    "ฟ้าหลังฝนสวยเสมอ รออีกนิดนะ",
+    "ไม่ต้องรู้คำตอบของทุกอย่างตอนนี้ก็ได้",
+    "พี่เชื่อว่าหนูทำได้ ถึงหนูจะยังไม่เชื่อก็ตาม",
+    "ให้รางวัลตัวเองบ้างนะ หนูทำงานหนักมากแล้ว",
+    "ทุกเรื่องยากมีวันจบ หนูจะผ่านเรื่องนี้ไปได้",
+    "ใจดีกับตัวเองให้เหมือนที่หนูใจดีกับคนอื่นนะ",
+    "หนูทำให้โลกของพี่สดใสขึ้นเยอะเลย",
+    "ถ้าวันนี้ไม่ไหว พรุ่งนี้ค่อยว่ากันใหม่",
+    "ไม่มีใครสมบูรณ์แบบ และไม่จำเป็นต้องเป็นด้วย",
+    "หนูน่ารักที่สุดในแบบของหนูเอง",
+    "ความรู้สึกแย่ ๆ จะผ่านไป เหมือนเมฆที่ลอยผ่านฟ้า",
+    "อยากระบายเมื่อไหร่ พี่ฟังอยู่เสมอ",
+    "หนูโตขึ้นเยอะมากเลยนะ พี่เห็นนะ",
+    "หนูคือคนที่มีค่าและสำคัญมาก ๆ สำหรับพี่",
+    "หนูไม่ต้องเก่งทุกเรื่อง แค่ทำให้ดีที่สุดก็พอแล้ว",
+    "ทำเต็มที่แล้วก็พอ ผลลัพธ์ปล่อยให้เป็นเรื่องของมัน",
+    "ไปเดินเล่นรับลมสักหน่อยไหม ใจจะโล่งขึ้น",
+    "คำว่าเก่ง ไม่ได้วัดจากความสำเร็จ แต่จากความพยายามของหนู",
+    "หนูกล้ากว่าที่ตัวเองคิดเยอะ",
+    "หนูเป็นคนดีมาก ๆ อย่าลืมข้อนี้นะ",
+    "เปิดเพลงที่ชอบ แล้วพักผ่อนสักหน่อยนะ",
+    "หนูสมควรได้รับสิ่งดี ๆ ทุกอย่าง",
+    "บางวันแค่ผ่านไปได้ ก็ถือว่าชนะแล้ว",
+    "พี่ดีใจที่มีหนูอยู่ในชีวิต",
+    "ความฝันของหนูไม่ไกลเกินเอื้อมหรอก",
+    "เริ่มใหม่ได้เสมอ ไม่ว่าจะกี่ครั้งก็ตาม",
+    "เรื่องที่ควบคุมไม่ได้ ปล่อยมันไปบ้างนะ",
+    "หนูเป็นแรงบันดาลใจให้พี่โดยไม่รู้ตัวเลย",
+    "เหนื่อยก็บอกว่าเหนื่อย ไม่ต้องเก็บไว้คนเดียว",
+    "ทุกวันที่หนูพยายาม ไม่มีวันไหนเสียเปล่าเลย",
+    "ยิ้มให้ตัวเองในกระจกสักทีสิ คนในนั้นเก่งมากนะ",
+    "ใช้เวลานานหน่อยก็ไม่เป็นไร ขอแค่ไม่ทิ้งตัวเอง",
+    "พี่อยู่ข้างหนูเสมอ ไม่ว่าจะเกิดอะไรขึ้น",
+    "หนูเปล่งประกายในแบบที่ไม่เหมือนใคร",
+    "คืนนี้นอนเร็วหน่อยนะ ร่างกายก็อยากพักเหมือนกัน",
+    "เรื่องเล็ก ๆ ที่หนูทำได้ทุกวัน รวมกันแล้วยิ่งใหญ่มาก",
+    "หนูไม่จำเป็นต้องทำให้ทุกคนพอใจ",
+    "ความใจดีของหนู ทำให้หลายคนมีความสุข",
+    "มีวันแย่ ๆ บ้างก็ไม่เป็นไร มันไม่ได้ลบความเก่งของหนูไป",
+    "กอดตัวเองแน่น ๆ สักที แล้วนับรวมอีกหนึ่งกอดจากพี่ด้วย",
+    "ทุกครั้งที่นึกถึงหนู พี่ยิ้มได้เสมอ",
+    "หลับตาพักผ่อนสักหน่อยนะ พรุ่งนี้จะได้เริ่มใหม่อย่างสดใส",
+    "พรุ่งนี้เป็นวันใหม่ที่ยังไม่มีรอยเปื้อนเลย",
+    "หนูคู่ควรกับความรักมาก ๆ",
+    "หนูเหมาะสมกับความสุขทุกอย่างที่โลกมีให้",
+    "ลองชมตัวเองวันละหนึ่งเรื่องดูนะ",
+    "ความพยายามของหนูไม่ได้สูญเปล่าเลย",
+    "พี่รักหนูเสมอ ไม่ว่าหนูจะเป็นยังไงก็ตาม",
+    "เสียงหัวเราะของหนูคือเสียงที่พี่ชอบที่สุด",
+    "ดาวทุกดวงในโหลนี้เป็นกำลังใจให้หนูเสมอ",
+    "วันนี้ลองทำสิ่งที่หนูชอบสักอย่างนะ",
+    "มีคนรักหนูมากกว่าที่หนูรู้ตั้งเยอะ",
+    "วันนี้ขอให้หนูได้กินของอร่อย ๆ นะ",
+    "หนูเก่งเสมอ ไม่ว่าจะเจอเรื่องยากแค่ไหน",
+    "หนูไม่ต้องแบกทุกอย่างไว้คนเดียว",
+    "ทุกความพยายามเล็ก ๆ ของหนู พี่ภูมิใจทั้งหมดเลย",
+    "ชีวิตไม่ได้ต้องการความสมบูรณ์แบบ แค่มีความสุขก็พอแล้ว",
+    "ถ้ายังไม่พร้อม รออีกนิดก็ได้",
+    "หนูคุ้มค่ากับการรอเสมอ",
+    "หัวใจของหนูสวยงามมาก",
+    "หนูเป็นคนที่พี่ไว้ใจที่สุดคนหนึ่งเลยนะ",
+    "พักสายตาจากจอสักหน่อย มองฟ้าไกล ๆ บ้างนะ",
+    "หนูเก่งพอแล้ว ตั้งแต่วันแรกจนถึงวันนี้",
+    "ทุกครั้งที่หนูล้ม พี่เห็นว่าหนูลุกขึ้นมาได้เสมอ",
+    "พี่ยังเชียร์หนูอยู่ตรงนี้ ไม่ไปไหนแน่นอน",
+    "เก็บดาวดวงนี้ไว้ในใจนะ เวลาท้อจะได้นึกถึง",
+    "สู้ ๆ นะ น้อง Chertam พี่เป็นกำลังใจให้เสมอ"
   ];
+  const TOTAL = MESSAGES.length;
   const COLORS = ["--p1", "--p2", "--p3", "--p4", "--p5"];
+  const colorOf = i => `var(${COLORS[i % COLORS.length]})`;
+  const STORE_KEY = "chertam-stars-v2";
 
-  // Star centers in jar SVG units (200 x 260), stacked from the bottom.
-  const SPOTS = [
-    [40, 228], [70, 230], [100, 227], [130, 230], [160, 228],
-    [55, 203], [85, 201], [115, 204], [145, 202],
-    [42, 178], [72, 176], [102, 179], [132, 177], [160, 180],
-    [80, 153], [118, 151]
-  ];
-  const SIZE = 34;
-  const STORE_KEY = "chertam-stars-read";
-
-  const starsEl = document.getElementById("stars");
-  const strip = document.getElementById("strip");
-  const stripLabel = document.getElementById("strip-label");
-  const stripText = document.getElementById("strip-text");
-  const countEl = document.getElementById("count");
-
-  let read = new Set();
-  try {
-    const saved = JSON.parse(localStorage.getItem(STORE_KEY) || "[]");
-    if (Array.isArray(saved)) read = new Set(saved.filter(i => i >= 0 && i < MESSAGES.length));
-  } catch (e) {}
-
-  const buttons = SPOTS.map(([cx, cy], i) => {
-    const btn = document.createElement("button");
-    btn.type = "button";
-    btn.className = "star-btn";
-    btn.style.left = ((cx - SIZE / 2) / 200 * 100) + "%";
-    btn.style.top = ((cy - SIZE / 2) / 260 * 100) + "%";
-    btn.style.setProperty("--rot", ((i * 47) % 70 - 35) + "deg");
-    btn.style.setProperty("--c", `var(${COLORS[i % COLORS.length]})`);
-    btn.setAttribute("aria-label", `ดาวดวงที่ ${i + 1}`);
-    btn.innerHTML = '<span class="star"></span>';
-    btn.addEventListener("click", () => openStar(i));
-    starsEl.appendChild(btn);
-    return btn;
+  // Decorative pile in jar SVG units (200 x 260): [row center y, stars in row], bottom first.
+  const ROWS = [[228, 5], [203, 4], [178, 5], [153, 4], [128, 5], [103, 4]];
+  const PILE = [];
+  ROWS.forEach(([y, n]) => {
+    const start = n === 5 ? 40 : 55;
+    for (let k = 0; k < n; k++) PILE.push([start + k * 30 + ((PILE.length * 37) % 9) - 4, y]);
   });
 
-  function openStar(i) {
+  const $ = id => document.getElementById(id);
+  const strip = $("strip");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  let read = new Set();
+  let current = -1;
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORE_KEY) || "null");
+    if (saved && Array.isArray(saved.read)) {
+      read = new Set(saved.read.filter(i => Number.isInteger(i) && i >= 0 && i < TOTAL));
+      if (Number.isInteger(saved.last) && saved.last >= 0 && saved.last < TOTAL) current = saved.last;
+    }
+  } catch (e) {}
+
+  const pileStars = PILE.map(([cx, cy], i) => {
+    const s = document.createElement("span");
+    s.className = "star";
+    s.style.left = ((cx - 17) / 200 * 100) + "%";
+    s.style.top = ((cy - 17) / 260 * 100) + "%";
+    s.style.setProperty("--rot", ((i * 47) % 70 - 35) + "deg");
+    s.style.setProperty("--c", colorOf(i));
+    $("pile").appendChild(s);
+    return s;
+  });
+
+  const cells = MESSAGES.map((_, i) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "cell";
+    b.style.setProperty("--paper", colorOf(i));
+    b.innerHTML = '<span class="star"></span>';
+    b.addEventListener("click", () => { show(i); $("reader").scrollIntoView({ block: "start", behavior: reduceMotion ? "auto" : "smooth" }); });
+    $("grid").appendChild(b);
+    return b;
+  });
+
+  function save() {
+    try { localStorage.setItem(STORE_KEY, JSON.stringify({ read: [...read], last: current })); } catch (e) {}
+  }
+
+  function show(i) {
+    current = i;
     read.add(i);
-    try { localStorage.setItem(STORE_KEY, JSON.stringify([...read])); } catch (e) {}
-    buttons.forEach((b, j) => {
-      b.classList.toggle("read", read.has(j));
-      b.classList.toggle("current", j === i);
-    });
-    strip.style.setProperty("--paper", `var(${COLORS[i % COLORS.length]})`);
-    stripLabel.textContent = `ดาวดวงที่ ${i + 1}`;
-    stripText.textContent = MESSAGES[i];
+    save();
+    strip.style.setProperty("--paper", colorOf(i));
+    $("strip-label").textContent = `ดวงที่ ${i + 1} / ${TOTAL}`;
+    $("strip-text").textContent = MESSAGES[i];
     strip.classList.remove("unfold");
     void strip.offsetWidth;
     strip.classList.add("unfold");
-    updateCount();
+    render();
   }
 
-  function updateCount() {
-    countEl.innerHTML = read.size === MESSAGES.length
-      ? "อ่านครบทั้ง <b>16</b> ดวงแล้ว เก่งมาก!"
-      : `คลี่แล้ว <b>${read.size}</b> / 16 ดวง`;
+  function render() {
+    const unread = TOTAL - read.size;
+    const visible = Math.ceil(unread / TOTAL * PILE.length);
+    pileStars.forEach((s, i) => { s.hidden = i >= visible; });
+    $("jar-caption").innerHTML = unread ? `เหลือในโหล <b>${unread}</b> ดวง` : "หยิบครบทุกดวงแล้ว";
+    $("count").innerHTML = unread ? `อ่านแล้ว <b>${read.size}</b> / ${TOTAL} ดวง` : `อ่านครบทั้ง <b>${TOTAL}</b> ดวงแล้ว เก่งมาก!`;
+    const pct = Math.round(read.size / TOTAL * 100);
+    $("percent").textContent = pct + "%";
+    $("bar").style.width = pct + "%";
+    $("draw").textContent = unread ? "หยิบดาวจากโหล 1 ดวง" : "อ่านครบแล้ว สุ่มอ่านซ้ำอีกดวง";
+    cells.forEach((c, i) => {
+      c.classList.toggle("read", read.has(i));
+      c.classList.toggle("current", i === current);
+      c.setAttribute("aria-label", `ดาวดวงที่ ${i + 1}${read.has(i) ? " (อ่านแล้ว)" : ""}`);
+    });
   }
 
-  document.getElementById("random").addEventListener("click", () => {
+  function draw() {
     const unread = MESSAGES.map((_, i) => i).filter(i => !read.has(i));
-    const pool = unread.length ? unread : MESSAGES.map((_, i) => i);
-    openStar(pool[Math.floor(Math.random() * pool.length)]);
+    const pool = unread.length ? unread : MESSAGES.map((_, i) => i).filter(i => i !== current);
+    show(pool[Math.floor(Math.random() * pool.length)]);
+  }
+  const step = d => show(current < 0 ? (d > 0 ? 0 : TOTAL - 1) : (current + d + TOTAL) % TOTAL);
+
+  $("jar").addEventListener("click", draw);
+  $("draw").addEventListener("click", draw);
+  $("prev").addEventListener("click", () => step(-1));
+  $("next").addEventListener("click", () => step(1));
+
+  let touchX = null, touchY = null;
+  strip.addEventListener("touchstart", e => { touchX = e.touches[0].clientX; touchY = e.touches[0].clientY; }, { passive: true });
+  strip.addEventListener("touchend", e => {
+    if (touchX === null) return;
+    const dx = e.changedTouches[0].clientX - touchX;
+    const dy = e.changedTouches[0].clientY - touchY;
+    touchX = null;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) step(dx < 0 ? 1 : -1);
   });
 
-  buttons.forEach((b, j) => b.classList.toggle("read", read.has(j)));
-  updateCount();
+  if (current >= 0) {
+    strip.style.setProperty("--paper", colorOf(current));
+    $("strip-label").textContent = `ดวงที่ ${current + 1} / ${TOTAL}`;
+    $("strip-text").textContent = MESSAGES[current];
+  }
+  render();
 </script>
