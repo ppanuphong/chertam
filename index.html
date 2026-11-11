@@ -1,3 +1,5 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>ถึงน้อง Chertam</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -46,6 +48,8 @@
     font-size: 1rem;
     line-height: 1.7;
     -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
   }
   .page {
     max-width: 28rem;
@@ -115,7 +119,7 @@
   .pile .star { position: absolute; width: 18%; height: auto; aspect-ratio: 1; transform: rotate(var(--rot)); }
   .jar-hint { margin-top: 0.4rem; font-size: 0.9rem; color: var(--muted); }
 
-  .star { display: block; color: var(--c); overflow: visible; filter: drop-shadow(0 2px 0 rgba(194, 62, 110, 0.18)); }
+  .star { display: block; color: var(--c, var(--p1)); overflow: visible; filter: drop-shadow(0 2px 0 rgba(194, 62, 110, 0.18)); }
 
   /* Note */
   .note {
