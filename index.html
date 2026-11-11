@@ -24,6 +24,9 @@
     --p4: #BBA8F5;
     --p5: #FFB27A;
     --p6: #8CCBFF;
+    --sky-top: #F3E1FF;
+    --grass: #CDEFD6;
+    --leaf: #7CC796;
     --font-display: "Itim", "Mali", "Comic Sans MS", cursive;
     --font-body: "Mali", "Thonburi", "Leelawadee UI", system-ui, sans-serif;
     color-scheme: light;
@@ -33,9 +36,11 @@
     background-color: var(--bg);
     background-image:
       radial-gradient(var(--dots) 18%, transparent 19%),
-      radial-gradient(var(--dots) 18%, transparent 19%);
-    background-size: 2.4rem 2.4rem;
-    background-position: 0 0, 1.2rem 1.2rem;
+      radial-gradient(var(--dots) 18%, transparent 19%),
+      linear-gradient(to bottom, var(--sky-top), transparent 30rem);
+    background-size: 2.4rem 2.4rem, 2.4rem 2.4rem, 100% 30rem;
+    background-position: 0 0, 1.2rem 1.2rem, 0 0;
+    background-repeat: repeat, repeat, no-repeat;
     color: var(--ink);
     font-family: var(--font-body);
     font-size: 1rem;
@@ -107,18 +112,10 @@
   .jar-svg .blush { fill: var(--blush); opacity: 0.7; }
   .jar-svg .bow { fill: var(--pink); }
   .pile { position: absolute; inset: 0; }
-  .pile .star { position: absolute; width: 17%; height: auto; aspect-ratio: 1; transform: rotate(var(--rot)); }
+  .pile .star { position: absolute; width: 18%; height: auto; aspect-ratio: 1; transform: rotate(var(--rot)); }
   .jar-hint { margin-top: 0.4rem; font-size: 0.9rem; color: var(--muted); }
 
-  .star {
-    display: block;
-    width: 100%;
-    height: 100%;
-    background:
-      radial-gradient(circle at 38% 32%, rgba(255, 255, 255, 0.65), transparent 45%),
-      var(--c);
-    clip-path: polygon(50% 2%, 62% 36%, 98% 37%, 69% 59%, 80% 95%, 50% 74%, 20% 95%, 31% 59%, 2% 37%, 38% 36%);
-  }
+  .star { display: block; color: var(--c); overflow: visible; filter: drop-shadow(0 2px 0 rgba(194, 62, 110, 0.18)); }
 
   /* Note */
   .note {
@@ -147,7 +144,12 @@
     opacity: 0.9;
     border-radius: 3px;
   }
-  .note .note-star { width: 2.4rem; height: 2.4rem; }
+  .note .note-star { width: 3.4rem; height: 3.4rem; transform-origin: 50% 90%; animation: squish 2.2s ease-in-out infinite; }
+  @keyframes squish {
+    0%, 100% { transform: scale(1, 1); }
+    45% { transform: scale(1.06, 0.94); }
+    60% { transform: scale(0.96, 1.05) translateY(-3px); }
+  }
   .note.pop { animation: pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
   @keyframes pop {
     from { transform: translateY(-2.5rem) scale(0.4) rotate(-8deg); opacity: 0; }
@@ -177,7 +179,10 @@
     background: linear-gradient(to top, var(--bg) 70%, transparent);
   }
   .dock .btn {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
     width: 100%;
     max-width: 24rem;
     margin: 0 auto;
@@ -195,16 +200,281 @@
   .dock .btn:active { transform: translateY(4px); box-shadow: 0 1px 0 var(--pink-deep); }
   .dock .btn:focus-visible { outline: 3px dashed var(--ink); outline-offset: 4px; }
 
+  /* Decorations */
+  .page { position: relative; z-index: 1; }
+  .icon { display: block; fill: currentColor; }
+  .sky { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+  .sky .icon {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    width: var(--s);
+    height: var(--s);
+    color: var(--c);
+    opacity: 0.75;
+    animation: drift 7s ease-in-out var(--d) infinite alternate;
+  }
+  @keyframes drift {
+    from { transform: translateY(0) rotate(-10deg); }
+    to { transform: translateY(-14px) rotate(10deg); }
+  }
+
+  .bunting { display: block; width: 100%; max-width: 22rem; height: auto; margin-bottom: 0.25rem; }
+  .bunting .string { fill: none; stroke: var(--glass-line); stroke-width: 1.5; }
+
+  .name-wrap { position: relative; display: inline-block; }
+  .tw { position: absolute; width: 0.45em; height: 0.45em; color: var(--p1); animation: twinkle 2.4s ease-in-out infinite; }
+  .tw1 { top: -0.15em; right: -0.5em; }
+  .tw2 { bottom: 0.05em; left: -0.45em; width: 0.3em; height: 0.3em; color: var(--p4); animation-delay: 0.8s; }
+  @keyframes twinkle {
+    0%, 100% { transform: scale(0.6) rotate(0deg); opacity: 0.5; }
+    50% { transform: scale(1.1) rotate(20deg); opacity: 1; }
+  }
+
+  .jar-area { position: relative; }
+  .jar-sparkle { position: absolute; color: var(--p1); animation: twinkle 2.6s ease-in-out infinite; pointer-events: none; }
+  .js1 { width: 1.6rem; height: 1.6rem; top: 12%; left: calc(50% - min(32vw, 7.75rem) - 1.4rem); }
+  .js2 { width: 1.1rem; height: 1.1rem; top: 45%; left: calc(50% + min(32vw, 7.75rem) + 0.4rem); color: var(--p2); animation-delay: 0.9s; }
+  .js3 { width: 0.9rem; height: 0.9rem; top: 72%; left: calc(50% - min(32vw, 7.75rem) - 0.6rem); color: var(--p3); animation-delay: 1.6s; }
+
+  .corner { position: absolute; bottom: 0.7rem; width: 1rem; height: 1rem; color: var(--c, var(--pink-soft)); }
+  .corner.l { left: 0.8rem; transform: rotate(-15deg); }
+  .corner.r { right: 0.8rem; transform: rotate(15deg); }
+
+  .bit {
+    position: absolute;
+    top: 0.5rem;
+    left: 50%;
+    width: var(--s);
+    height: var(--s);
+    margin-left: calc(var(--s) / -2);
+    color: var(--c);
+    pointer-events: none;
+    animation: fly 0.9s cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
+  }
+  @keyframes fly {
+    from { transform: translate(0, 0) scale(0.3) rotate(0); opacity: 1; }
+    70% { opacity: 1; }
+    to { transform: translate(var(--dx), var(--dy)) scale(1) rotate(var(--r)); opacity: 0; }
+  }
+
+  /* Side decorations: fill the empty space beside the column on wide screens. */
+  .side { position: fixed; top: 0; bottom: 0; width: calc((100% - 30rem) / 2); z-index: 6; pointer-events: none; overflow: hidden; }
+  .side.left { left: 0; }
+  .side.right { right: 0; }
+  @media (max-width: 48rem) { .side { display: none; } }
+  .hang {
+    position: absolute;
+    top: 0;
+    left: var(--x);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform-origin: top center;
+    animation: sway 4.5s ease-in-out var(--d) infinite alternate;
+  }
+  .hang::before, .hang .seg { content: ""; display: block; width: 2px; background: var(--glass-line); }
+  .hang::before { height: var(--len); }
+  .hang .seg { height: 1.4rem; }
+  .hang .icon { width: var(--s); height: var(--s); margin-top: -3px; filter: drop-shadow(0 3px 0 rgba(194, 62, 110, 0.15)); }
+  @keyframes sway {
+    from { transform: rotate(-5deg); }
+    to { transform: rotate(5deg); }
+  }
+  .cloud {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    width: var(--w);
+    aspect-ratio: 3 / 1;
+    background: var(--card);
+    border-radius: 999px;
+    box-shadow: 0 5px 0 var(--dots);
+    animation: bob 8s ease-in-out var(--d) infinite alternate;
+  }
+  .cloud::before, .cloud::after { content: ""; position: absolute; background: var(--card); border-radius: 50%; aspect-ratio: 1; }
+  .cloud::before { width: 46%; left: 14%; bottom: 35%; }
+  .cloud::after { width: 34%; right: 16%; bottom: 40%; }
+  .cloud .face { position: absolute; z-index: 1; left: 50%; top: 38%; width: 34%; transform: translateX(-50%); }
+  @keyframes bob {
+    from { transform: translateX(-10px); }
+    to { transform: translateX(10px); }
+  }
+  .rainbow { position: absolute; left: 8%; top: 70%; width: min(70%, 11rem); height: auto; }
+  .rainbow path { fill: none; stroke-width: 9; stroke-linecap: round; }
+  .big-star { position: absolute; left: 58%; top: 78%; width: 4.5rem; height: 4.5rem; color: var(--p1); transform: rotate(14deg); filter: drop-shadow(0 4px 0 rgba(194, 62, 110, 0.15)); animation: twinkle 3.2s ease-in-out infinite; }
+
+  .balloons { position: absolute; left: var(--x); top: var(--y); width: 5rem; height: auto; animation: rise 6s ease-in-out var(--d) infinite alternate; }
+  .balloons .str { fill: none; stroke: var(--glass-line); stroke-width: 1.5; }
+  @keyframes rise {
+    from { transform: translateY(0) rotate(-3deg); }
+    to { transform: translateY(-18px) rotate(3deg); }
+  }
+  .meadow { position: absolute; left: 0; right: 0; bottom: env(safe-area-inset-bottom, 0px); height: 5.5rem; }
+  .hill { position: absolute; left: -15%; right: -15%; bottom: -2.5rem; height: 5rem; background: var(--grass); border-radius: 50% 50% 0 0; }
+  .flower { position: absolute; bottom: 1.6rem; left: var(--x); width: var(--s); height: calc(var(--s) * 34 / 24); color: var(--c); transform-origin: bottom center; animation: sway 3.5s ease-in-out var(--d) infinite alternate; }
+
+  .cat { position: absolute; z-index: 2; width: 4rem; height: auto; bottom: 1.9rem; left: calc(50% + min(32vw, 7.75rem) - 2.8rem); pointer-events: none; }
+  .cat .fur { fill: var(--card); stroke: var(--pink-soft); stroke-width: 2; }
+  .cat .inner { fill: var(--pink-soft); }
+  .cat .line { fill: none; stroke: var(--ink); stroke-width: 2; stroke-linecap: round; }
+  .cat .nose { fill: var(--pink); }
+  .cat .blush { fill: var(--blush); opacity: 0.7; }
+  .cat .tail { fill: none; stroke: var(--card); stroke-width: 6; stroke-linecap: round; }
+  .cat .tail-edge { fill: none; stroke: var(--pink-soft); stroke-width: 9; stroke-linecap: round; }
+
+  .sticker { position: absolute; top: -0.9rem; right: 0.9rem; width: 2.2rem; height: 2.2rem; color: var(--p2); transform: rotate(14deg); filter: drop-shadow(0 0 0 var(--card)) drop-shadow(2px 2px 0 var(--card)) drop-shadow(-2px -2px 0 var(--card)) drop-shadow(0 3px 0 rgba(194, 62, 110, 0.2)); }
+
+  .tap-bit {
+    position: fixed;
+    z-index: 20;
+    left: var(--px);
+    top: var(--py);
+    width: var(--s);
+    height: var(--s);
+    margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2);
+    color: var(--c);
+    pointer-events: none;
+    animation: float-up 0.9s ease-out forwards;
+  }
+  @keyframes float-up {
+    from { transform: translate(0, 0) scale(0.4); opacity: 1; }
+    to { transform: translate(var(--dx), -60px) scale(1); opacity: 0; }
+  }
+
+  .fall { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+  .fall .icon {
+    position: absolute;
+    top: -2rem;
+    left: var(--x);
+    width: var(--s);
+    height: var(--s);
+    color: var(--c);
+    opacity: 0.55;
+    animation: fall var(--t) linear var(--d) infinite;
+  }
+  @keyframes fall {
+    from { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(28px, 52vh) rotate(180deg); }
+    to { transform: translate(-12px, calc(100vh + 4rem)) rotate(360deg); }
+  }
+
+  .jar-svg .tag-string { fill: none; stroke: var(--pink); stroke-width: 1.5; }
+  .jar-svg .tag { fill: var(--card); stroke: var(--pink); stroke-width: 2; }
+  .jar-svg .tag-hole { fill: var(--pink-soft); }
+  .jar-svg .tag-text { font-family: var(--font-display); font-size: 12.5px; fill: var(--pink-deep); }
+
+  .note::after {
+    content: "";
+    position: absolute;
+    left: 1.25rem;
+    right: 1.25rem;
+    bottom: -1rem;
+    height: 0.6rem;
+    background: radial-gradient(circle at 50% 0, var(--c, var(--pink-soft)) 0.3rem, transparent 0.32rem);
+    background-size: 0.9rem 0.6rem;
+  }
+
+  .eyebrow { display: inline-flex; align-items: center; gap: 0.35rem; }
+  .eyebrow .icon { width: 0.8rem; height: 0.8rem; color: var(--pink); }
+  .btn-star { width: 1.15rem; height: 1.15rem; color: var(--p1); flex: none; }
+
+  .bunny { position: absolute; bottom: 1.6rem; left: 64%; width: 3.4rem; height: auto; }
+  .bunny .fur { fill: var(--card); stroke: var(--pink-soft); stroke-width: 2; }
+  .bunny .inner { fill: var(--pink-soft); }
+  .bunny .eye { fill: var(--ink); }
+  .bunny .blush { fill: var(--blush); opacity: 0.7; }
+  .bunny .nose { fill: var(--pink); }
+  .flit { position: absolute; left: var(--x); top: var(--y); animation: flit 10s ease-in-out var(--d) infinite; }
+  .flit .icon { width: var(--s); height: var(--s); color: var(--c); animation: flap 0.28s ease-in-out infinite alternate; }
+  @keyframes flit {
+    0%, 100% { transform: translate(0, 0); }
+    25% { transform: translate(40px, -30px); }
+    50% { transform: translate(10px, -60px); }
+    75% { transform: translate(-30px, -20px); }
+  }
+  @keyframes flap {
+    from { transform: scaleX(1); }
+    to { transform: scaleX(0.35); }
+  }
+
+  .sign-row { display: flex; align-items: center; gap: 0.4rem; }
+  .sign-row .icon { width: 1.1rem; height: 1.1rem; color: var(--pink); }
+
   @media (prefers-reduced-motion: reduce) {
     .note.pop, .jar.wiggle .jar-inner { animation: none; }
     .dock .btn { transition: none; }
+    .sky .icon, .tw, .jar-sparkle, .hang, .cloud, .big-star, .balloons, .flower, .flit, .flit .icon, .note .note-star { animation: none; }
+    .fall { display: none; }
   }
 </style>
 
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="heart" viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.7 4.5c2.2 0 3.7 1.3 5.3 3.2 1.6-1.9 3.1-3.2 5.3-3.2 3.7 0 5.8 3.9 4.3 7.3C19.5 16.4 12 21 12 21z"/></symbol>
+  <symbol id="sparkle" viewBox="0 0 24 24"><path d="M12 1C13 8 16 11 23 12C16 13 13 16 12 23C11 16 8 13 1 12C8 11 11 8 12 1Z"/></symbol>
+  <symbol id="flower" viewBox="0 0 24 34"><path d="M12 15 L12 34" stroke="var(--leaf)" stroke-width="2.4"/><ellipse cx="16.5" cy="27" rx="4" ry="2" fill="var(--leaf)" transform="rotate(-30 16.5 27)"/><circle cx="12" cy="5" r="4.2"/><circle cx="18.7" cy="9.9" r="4.2"/><circle cx="16.2" cy="17.8" r="4.2"/><circle cx="7.8" cy="17.8" r="4.2"/><circle cx="5.3" cy="9.9" r="4.2"/><circle cx="12" cy="12" r="3.4" fill="var(--p1)"/></symbol>
+  <symbol id="petal" viewBox="0 0 24 24"><path d="M12 2C17 7 18.5 14 12 22C5.5 14 7 7 12 2Z"/><path d="M12 2L12 6" stroke="var(--card)" stroke-width="1.5"/></symbol>
+  <symbol id="butterfly" viewBox="0 0 24 20"><ellipse cx="7" cy="7" rx="6" ry="5"/><ellipse cx="17" cy="7" rx="6" ry="5"/><ellipse cx="8" cy="14" rx="4.5" ry="3.5"/><ellipse cx="16" cy="14" rx="4.5" ry="3.5"/><rect x="11" y="3.5" width="2" height="14" rx="1" fill="var(--ink)"/><circle cx="7" cy="7" r="1.8" fill="var(--card)" opacity="0.7"/><circle cx="17" cy="7" r="1.8" fill="var(--card)" opacity="0.7"/></symbol>
+  <symbol id="lucky-a" viewBox="-1 -1 26 26"><path d="M10.20 4.02 Q12.00 1.80 13.80 4.02 L15.00 5.51 Q16.29 7.09 18.20 7.83 L19.98 8.51 Q22.65 9.54 21.09 11.94 L20.06 13.54 Q18.94 15.26 18.83 17.30 L18.73 19.20 Q18.58 22.06 15.82 21.32 L13.97 20.83 Q12.00 20.30 10.03 20.83 L8.18 21.32 Q5.42 22.06 5.27 19.20 L5.17 17.30 Q5.06 15.26 3.94 13.54 L2.91 11.94 Q1.35 9.54 4.02 8.51 L5.80 7.83 Q7.71 7.09 9.00 5.51Z" stroke="#FFFFFF" stroke-width="1.8" stroke-linejoin="round" paint-order="stroke"/><path d="M15.00 8.87 L16.29 7.09 M16.86 14.58 L18.94 15.26 M12.00 18.11 L12.00 20.30 M7.14 14.58 L5.06 15.26 M9.00 8.87 L7.71 7.09" fill="none" stroke="#FFFFFF" stroke-opacity="0.35" stroke-width="0.6" stroke-linecap="round"/><ellipse cx="8.9" cy="8.9" rx="1.5" ry="0.9" fill="#FFFFFF" opacity="0.75" transform="rotate(-35 8.9 8.9)"/><circle cx="11.6" cy="5.6" r="0.5" fill="#FFFFFF" opacity="0.75"/><ellipse cx="9.4" cy="12.9" rx="1" ry="1.25" fill="var(--ink)"/><circle cx="9.780000000000001" cy="12.4" r="0.4" fill="#FFFFFF"/><ellipse cx="14.6" cy="12.9" rx="1" ry="1.25" fill="var(--ink)"/><circle cx="14.98" cy="12.4" r="0.4" fill="#FFFFFF"/><path d="M11.1 15.4 Q12 16.4 12.9 15.4" fill="none" stroke="var(--ink)" stroke-width="0.7" stroke-linecap="round"/><ellipse cx="7.3" cy="15.3" rx="1.5" ry="0.95" fill="var(--blush)"/><ellipse cx="16.7" cy="15.3" rx="1.5" ry="0.95" fill="var(--blush)"/></symbol>
+  <symbol id="lucky-b" viewBox="-1 -1 26 26"><path d="M10.20 4.02 Q12.00 1.80 13.80 4.02 L15.00 5.51 Q16.29 7.09 18.20 7.83 L19.98 8.51 Q22.65 9.54 21.09 11.94 L20.06 13.54 Q18.94 15.26 18.83 17.30 L18.73 19.20 Q18.58 22.06 15.82 21.32 L13.97 20.83 Q12.00 20.30 10.03 20.83 L8.18 21.32 Q5.42 22.06 5.27 19.20 L5.17 17.30 Q5.06 15.26 3.94 13.54 L2.91 11.94 Q1.35 9.54 4.02 8.51 L5.80 7.83 Q7.71 7.09 9.00 5.51Z" stroke="#FFFFFF" stroke-width="1.8" stroke-linejoin="round" paint-order="stroke"/><path d="M15.00 8.87 L16.29 7.09 M16.86 14.58 L18.94 15.26 M12.00 18.11 L12.00 20.30 M7.14 14.58 L5.06 15.26 M9.00 8.87 L7.71 7.09" fill="none" stroke="#FFFFFF" stroke-opacity="0.35" stroke-width="0.6" stroke-linecap="round"/><ellipse cx="8.9" cy="8.9" rx="1.5" ry="0.9" fill="#FFFFFF" opacity="0.75" transform="rotate(-35 8.9 8.9)"/><circle cx="11.6" cy="5.6" r="0.5" fill="#FFFFFF" opacity="0.75"/><path d="M8.3 13.4 Q9.4 11.9 10.5 13.4" fill="none" stroke="var(--ink)" stroke-width="0.75" stroke-linecap="round"/><path d="M13.5 13.4 Q14.6 11.9 15.7 13.4" fill="none" stroke="var(--ink)" stroke-width="0.75" stroke-linecap="round"/><path d="M10.9 15.1 Q12 17.5 13.1 15.1 Z" fill="var(--ink)"/><ellipse cx="12" cy="16.25" rx="0.6" ry="0.4" fill="#FF7FA3"/><ellipse cx="7.3" cy="15.3" rx="1.5" ry="0.95" fill="var(--blush)"/><ellipse cx="16.7" cy="15.3" rx="1.5" ry="0.95" fill="var(--blush)"/></symbol>
+  <symbol id="lucky-c" viewBox="-1 -1 26 26"><path d="M10.20 4.02 Q12.00 1.80 13.80 4.02 L15.00 5.51 Q16.29 7.09 18.20 7.83 L19.98 8.51 Q22.65 9.54 21.09 11.94 L20.06 13.54 Q18.94 15.26 18.83 17.30 L18.73 19.20 Q18.58 22.06 15.82 21.32 L13.97 20.83 Q12.00 20.30 10.03 20.83 L8.18 21.32 Q5.42 22.06 5.27 19.20 L5.17 17.30 Q5.06 15.26 3.94 13.54 L2.91 11.94 Q1.35 9.54 4.02 8.51 L5.80 7.83 Q7.71 7.09 9.00 5.51Z" stroke="#FFFFFF" stroke-width="1.8" stroke-linejoin="round" paint-order="stroke"/><path d="M15.00 8.87 L16.29 7.09 M16.86 14.58 L18.94 15.26 M12.00 18.11 L12.00 20.30 M7.14 14.58 L5.06 15.26 M9.00 8.87 L7.71 7.09" fill="none" stroke="#FFFFFF" stroke-opacity="0.35" stroke-width="0.6" stroke-linecap="round"/><ellipse cx="8.9" cy="8.9" rx="1.5" ry="0.9" fill="#FFFFFF" opacity="0.75" transform="rotate(-35 8.9 8.9)"/><circle cx="11.6" cy="5.6" r="0.5" fill="#FFFFFF" opacity="0.75"/><ellipse cx="9.4" cy="12.9" rx="1" ry="1.25" fill="var(--ink)"/><circle cx="9.780000000000001" cy="12.4" r="0.4" fill="#FFFFFF"/><path d="M13.5 13.4 Q14.6 11.9 15.7 13.4" fill="none" stroke="var(--ink)" stroke-width="0.75" stroke-linecap="round"/><path d="M11.1 15.4 Q12 16.4 12.9 15.4" fill="none" stroke="var(--ink)" stroke-width="0.7" stroke-linecap="round"/><ellipse cx="12.45" cy="16.2" rx="0.5" ry="0.65" fill="#FF7FA3"/><ellipse cx="7.3" cy="15.3" rx="1.5" ry="0.95" fill="var(--blush)"/><ellipse cx="16.7" cy="15.3" rx="1.5" ry="0.95" fill="var(--blush)"/></symbol>
+  <symbol id="lucky-d" viewBox="-1 -1 26 26"><path d="M10.20 4.02 Q12.00 1.80 13.80 4.02 L15.00 5.51 Q16.29 7.09 18.20 7.83 L19.98 8.51 Q22.65 9.54 21.09 11.94 L20.06 13.54 Q18.94 15.26 18.83 17.30 L18.73 19.20 Q18.58 22.06 15.82 21.32 L13.97 20.83 Q12.00 20.30 10.03 20.83 L8.18 21.32 Q5.42 22.06 5.27 19.20 L5.17 17.30 Q5.06 15.26 3.94 13.54 L2.91 11.94 Q1.35 9.54 4.02 8.51 L5.80 7.83 Q7.71 7.09 9.00 5.51Z" stroke="#FFFFFF" stroke-width="1.8" stroke-linejoin="round" paint-order="stroke"/><path d="M15.00 8.87 L16.29 7.09 M16.86 14.58 L18.94 15.26 M12.00 18.11 L12.00 20.30 M7.14 14.58 L5.06 15.26 M9.00 8.87 L7.71 7.09" fill="none" stroke="#FFFFFF" stroke-opacity="0.35" stroke-width="0.6" stroke-linecap="round"/><ellipse cx="8.9" cy="8.9" rx="1.5" ry="0.9" fill="#FFFFFF" opacity="0.75" transform="rotate(-35 8.9 8.9)"/><circle cx="11.6" cy="5.6" r="0.5" fill="#FFFFFF" opacity="0.75"/><ellipse cx="9.4" cy="12.9" rx="1" ry="1.25" fill="var(--ink)"/><circle cx="9.780000000000001" cy="12.4" r="0.4" fill="#FFFFFF"/><ellipse cx="14.6" cy="12.9" rx="1" ry="1.25" fill="var(--ink)"/><circle cx="14.98" cy="12.4" r="0.4" fill="#FFFFFF"/><path d="M10.6 15.2 Q11.3 16.2 12 15.3 Q12.7 16.2 13.4 15.2" fill="none" stroke="var(--ink)" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="7.3" cy="15.3" rx="1.5" ry="0.95" fill="var(--blush)"/><ellipse cx="16.7" cy="15.3" rx="1.5" ry="0.95" fill="var(--blush)"/><path d="M12 3.3 L9.4 1.9 L9.4 4.7 Z M12 3.3 L14.6 1.9 L14.6 4.7 Z" fill="var(--pink)"/><circle cx="12" cy="3.3" r="0.85" fill="var(--pink)"/></symbol>
+  <symbol id="lucky-e" viewBox="-1 -1 26 26"><path d="M10.20 4.02 Q12.00 1.80 13.80 4.02 L15.00 5.51 Q16.29 7.09 18.20 7.83 L19.98 8.51 Q22.65 9.54 21.09 11.94 L20.06 13.54 Q18.94 15.26 18.83 17.30 L18.73 19.20 Q18.58 22.06 15.82 21.32 L13.97 20.83 Q12.00 20.30 10.03 20.83 L8.18 21.32 Q5.42 22.06 5.27 19.20 L5.17 17.30 Q5.06 15.26 3.94 13.54 L2.91 11.94 Q1.35 9.54 4.02 8.51 L5.80 7.83 Q7.71 7.09 9.00 5.51Z" stroke="#FFFFFF" stroke-width="1.8" stroke-linejoin="round" paint-order="stroke"/><path d="M15.00 8.87 L16.29 7.09 M16.86 14.58 L18.94 15.26 M12.00 18.11 L12.00 20.30 M7.14 14.58 L5.06 15.26 M9.00 8.87 L7.71 7.09" fill="none" stroke="#FFFFFF" stroke-opacity="0.35" stroke-width="0.6" stroke-linecap="round"/><ellipse cx="8.9" cy="8.9" rx="1.5" ry="0.9" fill="#FFFFFF" opacity="0.75" transform="rotate(-35 8.9 8.9)"/><circle cx="11.6" cy="5.6" r="0.5" fill="#FFFFFF" opacity="0.75"/><path d="M8.3 13.4 Q9.4 11.9 10.5 13.4" fill="none" stroke="var(--ink)" stroke-width="0.75" stroke-linecap="round"/><path d="M13.5 13.4 Q14.6 11.9 15.7 13.4" fill="none" stroke="var(--ink)" stroke-width="0.75" stroke-linecap="round"/><path d="M11.1 15.4 Q12 16.4 12.9 15.4" fill="none" stroke="var(--ink)" stroke-width="0.7" stroke-linecap="round"/><path d="M7.3 16.2 L6.25 15.15 A0.55 0.55 0 0 1 7.3 14.5 A0.55 0.55 0 0 1 8.35 15.15 Z" fill="var(--blush)"/><path d="M16.7 16.2 L15.649999999999999 15.15 A0.55 0.55 0 0 1 16.7 14.5 A0.55 0.55 0 0 1 17.75 15.15 Z" fill="var(--blush)"/></symbol>
+  <symbol id="star5" viewBox="0 0 24 24"><path d="M12 1.5l3 6.6 7.2.8-5.4 4.9 1.5 7.1L12 17.3l-6.3 3.6 1.5-7.1L1.8 8.9 9 8.1z"/></symbol>
+</svg>
+<div class="fall" id="fall" aria-hidden="true"></div>
+<div class="sky" id="sky" aria-hidden="true"></div>
+<div class="side left" id="side-left" aria-hidden="true">
+  <svg class="balloons" viewBox="0 0 90 150" style="--x: 62%; --y: 38%; --d: 0s"><path class="str" d="M24 52 Q32 95 45 148"/><path class="str" d="M64 48 Q56 95 45 148"/><path class="str" d="M45 66 Q48 105 45 148"/><ellipse cx="24" cy="30" rx="18" ry="22" fill="var(--p2)"/><ellipse cx="64" cy="26" rx="18" ry="22" fill="var(--p4)"/><ellipse cx="45" cy="44" rx="18" ry="22" fill="var(--p1)"/><path d="M21 51 L27 51 L24 55Z" fill="var(--p2)"/><path d="M61 47 L67 47 L64 51Z" fill="var(--p4)"/><path d="M42 65 L48 65 L45 69Z" fill="var(--p1)"/><ellipse cx="17" cy="22" rx="4" ry="6" fill="#FFFFFF" opacity="0.6"/><ellipse cx="57" cy="18" rx="4" ry="6" fill="#FFFFFF" opacity="0.6"/><ellipse cx="38" cy="36" rx="4" ry="6" fill="#FFFFFF" opacity="0.6"/></svg>
+  <div class="meadow" data-meadow><div class="hill"></div><svg class="bunny" viewBox="0 0 60 66">
+    <ellipse class="fur" cx="21" cy="15" rx="5" ry="13" transform="rotate(-12 21 15)"/>
+    <ellipse class="fur" cx="35" cy="14" rx="5" ry="13" transform="rotate(12 35 14)"/>
+    <ellipse class="inner" cx="21" cy="16" rx="2.2" ry="8" transform="rotate(-12 21 16)"/>
+    <ellipse class="inner" cx="35" cy="15" rx="2.2" ry="8" transform="rotate(12 35 15)"/>
+    <ellipse class="fur" cx="36" cy="51" rx="17" ry="13"/>
+    <circle class="fur" cx="52" cy="54" r="5"/>
+    <circle class="fur" cx="28" cy="34" r="13"/>
+    <circle class="eye" cx="23.5" cy="33" r="1.8"/>
+    <circle class="eye" cx="32.5" cy="33" r="1.8"/>
+    <path class="nose" d="M26.5 37 L29.5 37 L28 39 Z"/>
+    <ellipse class="blush" cx="20" cy="38" rx="3" ry="1.8"/>
+    <ellipse class="blush" cx="36" cy="38" rx="3" ry="1.8"/>
+    <ellipse class="fur" cx="27" cy="62" rx="6" ry="3"/>
+  </svg></div>
+  <div class="cloud" style="--x: 14%; --y: 52%; --w: 7.5rem; --d: 0s"><svg class="face" viewBox="0 0 40 16" aria-hidden="true"><circle cx="12" cy="6" r="2.2" fill="var(--ink)"/><circle cx="28" cy="6" r="2.2" fill="var(--ink)"/><path d="M17 9 Q20 12 23 9" fill="none" stroke="var(--ink)" stroke-width="1.6" stroke-linecap="round"/><ellipse cx="7" cy="10" rx="3" ry="1.8" fill="var(--blush)"/><ellipse cx="33" cy="10" rx="3" ry="1.8" fill="var(--blush)"/></svg></div>
+  <svg class="rainbow" viewBox="0 0 120 70">
+    <path d="M10 64 A50 50 0 0 1 110 64" stroke="var(--p2)"/>
+    <path d="M20 64 A40 40 0 0 1 100 64" stroke="var(--p1)"/>
+    <path d="M30 64 A30 30 0 0 1 90 64" stroke="var(--p3)"/>
+    <path d="M40 64 A20 20 0 0 1 80 64" stroke="var(--p6)"/>
+  </svg>
+</div>
+<div class="side right" id="side-right" aria-hidden="true">
+  <svg class="balloons" viewBox="0 0 90 150" style="--x: 12%; --y: 38%; --d: -3s"><path class="str" d="M24 52 Q32 95 45 148"/><path class="str" d="M64 48 Q56 95 45 148"/><path class="str" d="M45 66 Q48 105 45 148"/><ellipse cx="24" cy="30" rx="18" ry="22" fill="var(--p6)"/><ellipse cx="64" cy="26" rx="18" ry="22" fill="var(--p5)"/><ellipse cx="45" cy="44" rx="18" ry="22" fill="var(--p2)"/><path d="M21 51 L27 51 L24 55Z" fill="var(--p6)"/><path d="M61 47 L67 47 L64 51Z" fill="var(--p5)"/><path d="M42 65 L48 65 L45 69Z" fill="var(--p2)"/><ellipse cx="17" cy="22" rx="4" ry="6" fill="#FFFFFF" opacity="0.6"/><ellipse cx="57" cy="18" rx="4" ry="6" fill="#FFFFFF" opacity="0.6"/><ellipse cx="38" cy="36" rx="4" ry="6" fill="#FFFFFF" opacity="0.6"/></svg>
+  <div class="meadow" data-meadow><div class="hill"></div></div>
+  <div class="cloud" style="--x: 56%; --y: 58%; --w: 6.5rem; --d: -3s"><svg class="face" viewBox="0 0 40 16" aria-hidden="true"><circle cx="12" cy="6" r="2.2" fill="var(--ink)"/><circle cx="28" cy="6" r="2.2" fill="var(--ink)"/><path d="M17 9 Q20 12 23 9" fill="none" stroke="var(--ink)" stroke-width="1.6" stroke-linecap="round"/><ellipse cx="7" cy="10" rx="3" ry="1.8" fill="var(--blush)"/><ellipse cx="33" cy="10" rx="3" ry="1.8" fill="var(--blush)"/></svg></div>
+  <div class="cloud" style="--x: 12%; --y: 66%; --w: 5rem; --d: -6s"></div>
+  <svg class="icon big-star" aria-hidden="true"><use href="#lucky-c"/></svg>
+  <div class="flit" style="--x: 30%; --y: 74%; --d: 0s"><svg class="icon" style="--s: 1.8rem; --c: var(--p4)"><use href="#butterfly"/></svg></div>
+  <div class="flit" style="--x: 70%; --y: 30%; --d: -5s"><svg class="icon" style="--s: 1.4rem; --c: var(--p2)"><use href="#butterfly"/></svg></div>
+</div>
+
 <div class="page">
   <header>
-    <div class="eyebrow">โหลดาวกระดาษ </div>
-    <h1>สู้ ๆ นะ น้อง <span class="name">Chertam</span></h1>
+    <svg class="bunting" viewBox="0 0 360 40" aria-hidden="true">
+      <path class="string" d="M0 4 Q180 28 360 4"/>
+      <polygon points="6,6.5 34,6.5 20,26.5" fill="var(--p2)"/>
+      <polygon points="46,10.7 74,10.7 60,30.7" fill="var(--p1)"/>
+      <polygon points="86,13.6 114,13.6 100,33.6" fill="var(--p3)"/>
+      <polygon points="126,15.4 154,15.4 140,35.4" fill="var(--p4)"/>
+      <polygon points="166,16 194,16 180,36" fill="var(--p5)"/>
+      <polygon points="206,15.4 234,15.4 220,35.4" fill="var(--p6)"/>
+      <polygon points="246,13.6 274,13.6 260,33.6" fill="var(--p2)"/>
+      <polygon points="286,10.7 314,10.7 300,30.7" fill="var(--p1)"/>
+      <polygon points="326,6.5 354,6.5 340,26.5" fill="var(--p3)"/>
+    </svg>
+    <div class="eyebrow"><svg class="icon" aria-hidden="true"><use href="#heart"/></svg>โหลดาวกระดาษ <svg class="icon" aria-hidden="true"><use href="#heart"/></svg></div>
+    <h1>สู้ ๆ นะ น้อง <span class="name-wrap"><span class="name">Chertam</span><svg class="icon tw tw1" aria-hidden="true"><use href="#sparkle"/></svg><svg class="icon tw tw2" aria-hidden="true"><use href="#sparkle"/></svg></span></h1>
     <p class="lead">ในโหลนี้มีดาวกระดาษอยู่ แต่ละดวงมีข้อความเขียนไว้ข้างใน แตะที่โหลเพื่อหยิบดาวมาอ่านทีละดวงนะหนู</p>
   </header>
 
@@ -227,26 +497,55 @@
           <ellipse class="blush" cx="123" cy="34" rx="5" ry="3"/>
           <path class="bow" d="M150 18 L166 8 L166 30 Z M150 18 L134 8 L134 30 Z"/>
           <circle class="bow" cx="150" cy="18" r="5"/>
+          <path class="tag-string" d="M152 22 Q164 36 158 54"/>
+          <g transform="rotate(9 168 66)">
+            <rect class="tag" x="141" y="53" width="56" height="24" rx="7"/>
+            <circle class="tag-hole" cx="149" cy="65" r="2.4"/>
+            <text class="tag-text" x="172" y="69.5" text-anchor="middle">Chertam</text>
+          </g>
         </svg>
         <span class="pile" id="pile" aria-hidden="true"></span>
       </span>
     </button>
+    <svg class="cat" viewBox="0 0 78 56" aria-hidden="true">
+      <path class="tail-edge" d="M60 46 Q76 40 70 24"/>
+      <path class="tail" d="M60 46 Q76 40 70 24"/>
+      <path class="fur" d="M12 24 L10 5 L27 15 Z"/>
+      <path class="fur" d="M52 24 L54 5 L37 15 Z"/>
+      <path class="inner" d="M14 11 L15 19 L21 16 Z"/>
+      <path class="inner" d="M50 11 L49 19 L43 16 Z"/>
+      <ellipse class="fur" cx="32" cy="31" rx="24" ry="19"/>
+      <path class="line" d="M21 29 Q24 26 27 29"/>
+      <path class="line" d="M37 29 Q40 26 43 29"/>
+      <path class="nose" d="M30 33 L34 33 L32 35.5 Z"/>
+      <path class="line" d="M32 35.5 Q30.5 38.5 28 37 M32 35.5 Q33.5 38.5 36 37" stroke-width="1.6"/>
+      <ellipse class="blush" cx="18" cy="35" rx="4" ry="2.4"/>
+      <ellipse class="blush" cx="46" cy="35" rx="4" ry="2.4"/>
+      <ellipse class="fur" cx="21" cy="50" rx="7" ry="4.5"/>
+      <ellipse class="fur" cx="43" cy="50" rx="7" ry="4.5"/>
+    </svg>
+    <svg class="icon jar-sparkle js1" aria-hidden="true"><use href="#sparkle"/></svg>
+    <svg class="icon jar-sparkle js2" aria-hidden="true"><use href="#heart"/></svg>
+    <svg class="icon jar-sparkle js3" aria-hidden="true"><use href="#sparkle"/></svg>
     <div class="jar-hint">แตะที่โหลได้เลย</div>
   </section>
 
   <section class="note" id="note" aria-live="polite">
-    <span class="star note-star" id="note-star" aria-hidden="true"></span>
+    <svg class="icon star note-star" id="note-star" aria-hidden="true"><use href="#lucky-a"/></svg>
     <p class="note-text" id="note-text">ลองหยิบดาวดวงแรกดูสิ ข้างในมีข้อความรออยู่</p>
+    <svg class="icon sticker" aria-hidden="true"><use href="#heart"/></svg>
+    <svg class="icon corner l" aria-hidden="true"><use href="#heart"/></svg>
+    <svg class="icon corner r" aria-hidden="true"><use href="#heart"/></svg>
   </section>
 
   <footer>
-    <span class="sign">จากพี่แปม ที่เป็นกำลังใจให้เสมอ</span>
+    <span class="sign-row"><svg class="icon" aria-hidden="true"><use href="#heart"/></svg><span class="sign">จากพี่แปม ที่เป็นกำลังใจให้เสมอ</span><svg class="icon" aria-hidden="true"><use href="#heart"/></svg></span>
     <span>เหนื่อยเมื่อไหร่ กลับมาเปิดโหลนี้ได้ทุกเมื่อ</span>
   </footer>
 </div>
 
 <div class="dock">
-  <button class="btn" id="draw" type="button">หยิบดาวอีกดวง</button>
+  <button class="btn" id="draw" type="button"><svg class="icon btn-star" aria-hidden="true"><use href="#star5"/></svg>หยิบดาวอีกดวง<svg class="icon btn-star" aria-hidden="true"><use href="#star5"/></svg></button>
 </div>
 
 <script>
@@ -358,14 +657,22 @@
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   // Decorative pile in jar SVG units (200 x 260): [row center y, stars in row], bottom first.
+  function luckyStar(face) {
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("class", "icon star");
+    const use = document.createElementNS("http://www.w3.org/2000/svg", "use");
+    use.setAttribute("href", "#lucky-" + face);
+    svg.appendChild(use);
+    return svg;
+  }
+
   const ROWS = [[228, 5], [203, 4], [178, 5], [153, 4], [128, 5], [103, 4]];
   const pile = document.getElementById("pile");
   let n = 0;
   ROWS.forEach(([y, count]) => {
     const start = count === 5 ? 40 : 55;
     for (let k = 0; k < count; k++, n++) {
-      const s = document.createElement("span");
-      s.className = "star";
+      const s = luckyStar(["a", "b", "c", "d", "e"][n % 5]);
       s.style.left = ((start + k * 30 + (n * 37) % 9 - 4 - 17) / 200 * 100) + "%";
       s.style.top = ((y - 17) / 260 * 100) + "%";
       s.style.setProperty("--rot", ((n * 47) % 70 - 35) + "deg");
@@ -389,8 +696,119 @@
   function render(i) {
     const color = `var(${COLORS[Math.floor(Math.random() * COLORS.length)]})`;
     note.style.setProperty("--c", color);
-    document.getElementById("note-star").style.setProperty("--c", color);
+    const noteStar = document.getElementById("note-star");
+    noteStar.style.setProperty("--c", color);
+    noteStar.querySelector("use").setAttribute("href", "#lucky-" + ["a", "b", "c", "d", "e"][i % 5]);
     document.getElementById("note-text").textContent = MESSAGES[i];
+  }
+
+  const SVG_NS = "http://www.w3.org/2000/svg";
+  function icon(name) {
+    const svg = document.createElementNS(SVG_NS, "svg");
+    svg.setAttribute("class", "icon");
+    const use = document.createElementNS(SVG_NS, "use");
+    use.setAttribute("href", "#" + name);
+    svg.appendChild(use);
+    return svg;
+  }
+
+  // Hanging strings of stars and hearts on each side: [side, x, string length, delay, icons].
+  const HANGERS = [
+    ["left", 18, "14vh", 0, [["lucky-a", "--p1"], ["heart", "--p2"]]],
+    ["left", 48, "28vh", -1.5, [["sparkle", "--p4"]]],
+    ["left", 76, "8vh", -3, [["heart", "--p3"], ["lucky-b", "--p5"], ["heart", "--p2"]]],
+    ["right", 24, "22vh", -0.8, [["heart", "--p2"], ["lucky-b", "--p6"]]],
+    ["right", 54, "9vh", -2.2, [["lucky-b", "--p1"]]],
+    ["right", 82, "30vh", -3.6, [["heart", "--p4"], ["sparkle", "--p1"]]]
+  ];
+  HANGERS.forEach(([side, x, len, delay, items]) => {
+    const h = document.createElement("div");
+    h.className = "hang";
+    h.style.setProperty("--x", x + "%");
+    h.style.setProperty("--len", len);
+    h.style.setProperty("--d", delay + "s");
+    items.forEach(([name, color], k) => {
+      if (k) { const seg = document.createElement("span"); seg.className = "seg"; h.appendChild(seg); }
+      const el = icon(name);
+      el.style.setProperty("--s", (name === "sparkle" ? 2 : 2.4) + "rem");
+      el.style.color = `var(${color})`;
+      h.appendChild(el);
+    });
+    document.getElementById("side-" + side).appendChild(h);
+  });
+
+  // Flowers along the hill at the bottom of each side.
+  document.querySelectorAll("[data-meadow]").forEach((m, side) => {
+    for (let k = 0; k < 7; k++) {
+      const f = icon("flower");
+      f.classList.add("flower");
+      f.style.setProperty("--x", (4 + k * 14 + ((k * 13 + side * 7) % 6)) + "%");
+      f.style.setProperty("--s", (1.3 + ((k * 7 + side * 3) % 5) * 0.2) + "rem");
+      f.style.setProperty("--c", `var(${["--p2", "--p4", "--p5", "--p6", "--p3"][(k + side * 2) % 5]})`);
+      f.style.setProperty("--d", (-k * 0.6) + "s");
+      m.appendChild(f);
+    }
+  });
+
+  // Little hearts wherever you tap.
+  document.addEventListener("pointerdown", e => {
+    if (reduceMotion) return;
+    for (let k = 0; k < 3; k++) {
+      const el = icon(k === 1 ? "sparkle" : "heart");
+      el.classList.add("tap-bit");
+      el.style.setProperty("--px", e.clientX + "px");
+      el.style.setProperty("--py", e.clientY + "px");
+      el.style.setProperty("--dx", (k - 1) * 22 + "px");
+      el.style.setProperty("--s", (0.8 + Math.random() * 0.5) + "rem");
+      el.style.setProperty("--c", `var(${COLORS[Math.floor(Math.random() * COLORS.length)]})`);
+      el.addEventListener("animationend", () => el.remove());
+      document.body.appendChild(el);
+    }
+  });
+
+  // Petals and tiny hearts drifting down the whole screen.
+  const fall = document.getElementById("fall");
+  for (let k = 0; k < 14; k++) {
+    const el = icon(k % 3 === 2 ? "heart" : "petal");
+    el.style.setProperty("--x", ((k * 37 + 5) % 100) + "%");
+    el.style.setProperty("--s", (0.6 + (k % 4) * 0.15) + "rem");
+    el.style.setProperty("--t", (11 + (k % 5) * 2) + "s");
+    el.style.setProperty("--d", (-k * 1.3) + "s");
+    el.style.setProperty("--c", `var(${k % 3 === 2 ? "--p4" : "--p2"})`);
+    fall.appendChild(el);
+  }
+
+  // Floating hearts and sparkles, kept near the side edges so they stay clear of the text.
+  const SKY = [
+    ["heart", 3, 8, 1.1], ["sparkle", 90, 5, 1.0], ["star5", 92, 22, 0.9], ["heart", 6, 30, 0.8],
+    ["sparkle", 4, 52, 1.1], ["heart", 91, 44, 1.2], ["star5", 7, 74, 1.0], ["sparkle", 93, 66, 0.8],
+    ["heart", 89, 86, 1.0], ["sparkle", 5, 92, 0.9]
+  ];
+  const sky = document.getElementById("sky");
+  SKY.forEach(([name, x, y, size], k) => {
+    const el = icon(name);
+    el.style.setProperty("--x", x + "%");
+    el.style.setProperty("--y", y + "%");
+    el.style.setProperty("--s", size + "rem");
+    el.style.setProperty("--d", (-k * 0.9) + "s");
+    el.style.setProperty("--c", `var(${COLORS[k % COLORS.length]})`);
+    sky.appendChild(el);
+  });
+
+  function burst() {
+    for (let k = 0; k < 12; k++) {
+      const el = icon(k % 3 === 0 ? "sparkle" : k % 3 === 1 ? "heart" : "star5");
+      el.classList.add("bit");
+      const angle = (Math.PI * 2 * k) / 12 + Math.random() * 0.4;
+      const dist = 70 + Math.random() * 50;
+      el.style.setProperty("--dx", Math.cos(angle) * dist + "px");
+      el.style.setProperty("--dy", Math.sin(angle) * dist - 20 + "px");
+      el.style.setProperty("--r", (Math.random() * 120 - 60) + "deg");
+      el.style.setProperty("--s", (0.7 + Math.random() * 0.6) + "rem");
+      el.style.setProperty("--c", `var(${COLORS[k % COLORS.length]})`);
+      el.addEventListener("animationend", () => el.remove());
+      note.appendChild(el);
+    }
   }
 
   function draw() {
@@ -407,6 +825,7 @@
       void note.offsetWidth;
       note.classList.add("pop");
       jar.classList.add("wiggle");
+      burst();
     }
   }
 
