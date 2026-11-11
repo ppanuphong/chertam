@@ -2,70 +2,40 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sriracha&family=IBM+Plex+Sans+Thai+Looped:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Itim&family=Mali:wght@400;500;600;700&display=swap">
 <style>
-  /* Layout: one phone-width column (jar, unfolded strip, 10x10 star collection) with the main action pinned to the bottom for the thumb. */
+  /* Layout: one phone-width column (jar with a little face, the note it gives you) and a candy button pinned to the bottom for the thumb.
+     Single pastel theme on purpose: the page keeps its sweet look in light and dark system settings. */
   :root {
-    --sky: #EAF0F6;
-    --surface: #F7F9FC;
-    --ink: #1E2640;
-    --muted: #59637E;
-    --line: #C9D5E6;
-    --glass: rgba(140, 170, 210, 0.16);
-    --glass-line: #9FB3CF;
-    --glow: rgba(246, 201, 69, 0.24);
-    --accent: #3D5A99;
-    --on-accent: #FFFFFF;
-    --lid: #3D5A99;
-    --lid-band: #5B79B8;
-    --dim-star: #CBD5E3;
-    --paper-ink: #232A3F;
-    --paper-plain: #FBF6E4;
-    --p1: #F6C945;
-    --p2: #F29CB4;
-    --p3: #82CDB3;
-    --p4: #ADA0E6;
-    --p5: #F5A762;
-    --font-display: "Sriracha", "Comic Sans MS", cursive;
-    --font-body: "IBM Plex Sans Thai Looped", "Thonburi", "Leelawadee UI", system-ui, sans-serif;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --sky: #10172A;
-      --surface: #182139;
-      --ink: #E8ECF6;
-      --muted: #A3ADC8;
-      --line: #2B3756;
-      --glass: rgba(160, 190, 235, 0.08);
-      --glass-line: #4E6290;
-      --glow: rgba(246, 201, 69, 0.14);
-      --accent: #8FB0F0;
-      --on-accent: #10172A;
-      --lid: #34508C;
-      --lid-band: #4A69AD;
-      --dim-star: #2E3A5A;
-      color-scheme: dark;
-    }
-  }
-  :root[data-theme="dark"] {
-    --sky: #10172A;
-    --surface: #182139;
-    --ink: #E8ECF6;
-    --muted: #A3ADC8;
-    --line: #2B3756;
-    --glass: rgba(160, 190, 235, 0.08);
-    --glass-line: #4E6290;
-    --glow: rgba(246, 201, 69, 0.14);
-    --accent: #8FB0F0;
-    --on-accent: #10172A;
-    --lid: #34508C;
-    --lid-band: #4A69AD;
-    --dim-star: #2E3A5A;
-    color-scheme: dark;
+    --bg: #FFF1F5;
+    --dots: #FFDCE6;
+    --card: #FFFFFF;
+    --ink: #5B3A4B;
+    --muted: #8F6A7C;
+    --pink: #E8578A;
+    --pink-deep: #C23E6E;
+    --pink-soft: #FFB8CC;
+    --glass: rgba(255, 255, 255, 0.55);
+    --glass-line: #F4A9BE;
+    --blush: #FF9DB8;
+    --p1: #FFD66B;
+    --p2: #FF9EBB;
+    --p3: #8EDCC0;
+    --p4: #BBA8F5;
+    --p5: #FFB27A;
+    --p6: #8CCBFF;
+    --font-display: "Itim", "Mali", "Comic Sans MS", cursive;
+    --font-body: "Mali", "Thonburi", "Leelawadee UI", system-ui, sans-serif;
+    color-scheme: light;
   }
 
   body {
-    background: var(--sky);
+    background-color: var(--bg);
+    background-image:
+      radial-gradient(var(--dots) 18%, transparent 19%),
+      radial-gradient(var(--dots) 18%, transparent 19%);
+    background-size: 2.4rem 2.4rem;
+    background-position: 0 0, 1.2rem 1.2rem;
     color: var(--ink);
     font-family: var(--font-body);
     font-size: 1rem;
@@ -77,165 +47,124 @@
     margin: 0 auto;
     padding-left: max(16px, env(safe-area-inset-left, 0px));
     padding-right: max(16px, env(safe-area-inset-right, 0px));
-    padding-block: 1.75rem calc(6rem + env(safe-area-inset-bottom, 0px));
+    padding-block: 1.75rem calc(6.5rem + env(safe-area-inset-bottom, 0px));
     display: grid;
-    gap: 1.75rem;
+    gap: 1.5rem;
   }
 
-  header { display: grid; gap: 0.35rem; }
-  .eyebrow { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; color: var(--muted); }
+  header { display: grid; justify-items: center; gap: 0.5rem; text-align: center; }
+  .eyebrow {
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--pink-deep);
+    background: var(--card);
+    border: 2px solid var(--pink-soft);
+    border-radius: 999px;
+    padding: 0.15rem 0.9rem;
+  }
   h1 {
     font-family: var(--font-display);
     font-weight: 400;
-    font-size: clamp(2rem, 9vw, 2.75rem);
-    line-height: 1.25;
+    font-size: clamp(2.1rem, 10vw, 2.9rem);
+    line-height: 1.2;
     margin: 0;
     text-wrap: balance;
   }
-  h1 .name { color: var(--accent); }
-  .lead { margin: 0; color: var(--muted); }
+  h1 .name { color: var(--pink); }
+  .lead { margin: 0; color: var(--muted); max-width: 22rem; }
 
   /* Jar */
-  .jar-area { display: grid; justify-items: center; gap: 0.25rem; }
+  .jar-area { display: grid; justify-items: center; }
   .jar {
     position: relative;
-    width: min(62vw, 15rem);
+    width: min(64vw, 15.5rem);
     max-width: 100%;
     aspect-ratio: 200 / 260;
     padding: 0;
     border: 0;
     background: none;
     cursor: pointer;
-    border-radius: 1.5rem;
+    border-radius: 2rem;
     touch-action: manipulation;
   }
-  .jar:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
-  .jar:active .jar-inner { transform: rotate(-3deg) scale(0.98); }
-  .jar-inner { position: absolute; inset: 0; transition: transform 0.15s ease; }
-  .jar-inner::before {
-    content: "";
-    position: absolute;
-    inset: 20% -12% -4%;
-    background: radial-gradient(closest-side, var(--glow), transparent);
+  .jar:focus-visible { outline: 3px dashed var(--pink); outline-offset: 6px; }
+  .jar-inner { position: absolute; inset: 0; transform-origin: 50% 90%; }
+  .jar.wiggle .jar-inner { animation: wiggle 0.5s ease; }
+  @keyframes wiggle {
+    0%, 100% { transform: rotate(0); }
+    25% { transform: rotate(-6deg); }
+    50% { transform: rotate(5deg); }
+    75% { transform: rotate(-2deg); }
   }
-  .jar-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
-  .jar-svg .glass { fill: var(--glass); stroke: var(--glass-line); stroke-width: 2.5; }
-  .jar-svg .shine { fill: none; stroke: var(--surface); stroke-width: 5; stroke-linecap: round; opacity: 0.7; }
-  .jar-svg .lid { fill: var(--lid); }
-  .jar-svg .lid-band { fill: var(--lid-band); }
+  .jar-svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  .jar-svg .glass { fill: var(--glass); stroke: var(--glass-line); stroke-width: 3; }
+  .jar-svg .shine { fill: none; stroke: var(--card); stroke-width: 6; stroke-linecap: round; }
+  .jar-svg .lid { fill: var(--pink-soft); stroke: var(--pink); stroke-width: 2.5; }
+  .jar-svg .lid-dot { fill: var(--card); opacity: 0.8; }
+  .jar-svg .eye { fill: var(--ink); }
+  .jar-svg .smile { fill: none; stroke: var(--ink); stroke-width: 2.4; stroke-linecap: round; }
+  .jar-svg .blush { fill: var(--blush); opacity: 0.7; }
+  .jar-svg .bow { fill: var(--pink); }
   .pile { position: absolute; inset: 0; }
   .pile .star { position: absolute; width: 17%; height: auto; aspect-ratio: 1; transform: rotate(var(--rot)); }
-  .jar-caption { font-size: 0.9rem; color: var(--muted); font-variant-numeric: tabular-nums; }
-  .jar-caption b { color: var(--ink); font-weight: 600; }
+  .jar-hint { margin-top: 0.4rem; font-size: 0.9rem; color: var(--muted); }
 
   .star {
     display: block;
     width: 100%;
     height: 100%;
     background:
-      radial-gradient(circle at 38% 32%, rgba(255, 255, 255, 0.55), transparent 45%),
+      radial-gradient(circle at 38% 32%, rgba(255, 255, 255, 0.65), transparent 45%),
       var(--c);
     clip-path: polygon(50% 2%, 62% 36%, 98% 37%, 69% 59%, 80% 95%, 50% 74%, 20% 95%, 31% 59%, 2% 37%, 38% 36%);
   }
 
-  /* Paper strip */
-  .reader { display: grid; gap: 0.75rem; scroll-margin-top: 1rem; }
-  .strip {
+  /* Note */
+  .note {
     position: relative;
-    background: var(--paper, var(--paper-plain));
-    color: var(--paper-ink);
-    padding: 1.25rem 1.25rem 1.1rem;
-    border-radius: 3px;
-    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06), 0 10px 24px -14px rgba(20, 30, 60, 0.45);
-    transform-origin: left center;
-    min-height: 10.5rem;
+    background: var(--card);
+    border: 3px solid var(--c, var(--pink-soft));
+    border-radius: 1.5rem;
+    padding: 2rem 1.4rem 1.5rem;
+    min-height: 10rem;
     display: grid;
     align-content: center;
-    gap: 0.4rem;
-    touch-action: pan-y;
+    justify-items: center;
+    gap: 0.6rem;
+    text-align: center;
+    box-shadow: 0 6px 0 var(--c, var(--pink-soft));
   }
-  .strip::after {
+  .note::before {
     content: "";
     position: absolute;
-    inset: 0;
-    background: repeating-linear-gradient(90deg, transparent 0 19.6%, rgba(0, 0, 0, 0.06) 19.6% 20%);
-    pointer-events: none;
-    border-radius: inherit;
+    top: -0.85rem;
+    left: 50%;
+    width: 5.5rem;
+    height: 1.5rem;
+    transform: translateX(-50%) rotate(-3deg);
+    background: repeating-linear-gradient(45deg, var(--pink-soft) 0 6px, var(--dots) 6px 12px);
+    opacity: 0.9;
+    border-radius: 3px;
   }
-  .strip.unfold { animation: unfold 0.45s cubic-bezier(0.2, 0.8, 0.2, 1); }
-  @keyframes unfold {
-    from { transform: scaleX(0.15) rotate(-2deg); opacity: 0.4; }
+  .note .note-star { width: 2.4rem; height: 2.4rem; }
+  .note.pop { animation: pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  @keyframes pop {
+    from { transform: translateY(-2.5rem) scale(0.4) rotate(-8deg); opacity: 0; }
     to { transform: none; opacity: 1; }
   }
-  .strip-label { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.06em; opacity: 0.7; font-variant-numeric: tabular-nums; }
-  .strip-text {
+  .note-text {
     font-family: var(--font-display);
-    font-size: clamp(1.25rem, 5.6vw, 1.5rem);
+    font-size: clamp(1.3rem, 5.8vw, 1.55rem);
     line-height: 1.55;
     margin: 0;
     text-wrap: pretty;
   }
 
-  .nav { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 0.5rem; }
-  .nav-btn {
-    font: 500 0.95rem/1 var(--font-body);
-    min-height: 2.75rem;
-    padding: 0 0.9rem;
-    border-radius: 999px;
-    border: 1px solid var(--line);
-    background: var(--surface);
-    color: var(--ink);
-    cursor: pointer;
-    touch-action: manipulation;
-  }
-  .nav-btn:first-child { justify-self: start; }
-  .nav-btn:last-child { justify-self: end; }
-  .nav-btn:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
-  .swipe-hint { font-size: 0.78rem; color: var(--muted); text-align: center; }
+  footer { display: grid; justify-items: center; gap: 0.1rem; text-align: center; color: var(--muted); }
+  footer .sign { font-family: var(--font-display); font-size: 1.3rem; color: var(--pink-deep); }
 
-  .progress { display: grid; gap: 0.4rem; }
-  .progress-row { display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--muted); font-variant-numeric: tabular-nums; }
-  .progress-row b { color: var(--ink); font-weight: 600; }
-  .bar { height: 0.45rem; border-radius: 999px; background: var(--line); overflow: hidden; }
-  .bar span { display: block; height: 100%; width: 0; background: var(--p1); border-radius: inherit; transition: width 0.3s ease; }
-
-  /* Collection */
-  .collection { display: grid; gap: 0.6rem; }
-  h2 { font-family: var(--font-display); font-weight: 400; font-size: 1.4rem; margin: 0; }
-  .collection p { margin: 0; color: var(--muted); font-size: 0.9rem; }
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(10, minmax(0, 1fr));
-    gap: 2px;
-    padding: 0.5rem;
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: 0.9rem;
-  }
-  .cell {
-    aspect-ratio: 1;
-    padding: 18%;
-    border: 0;
-    border-radius: 0.5rem;
-    background: none;
-    cursor: pointer;
-    touch-action: manipulation;
-  }
-  .cell .star { --c: var(--dim-star); background: var(--c); }
-  .cell.read .star { --c: var(--paper); background: radial-gradient(circle at 38% 32%, rgba(255, 255, 255, 0.55), transparent 45%), var(--c); }
-  .cell.current { background: var(--sky); box-shadow: inset 0 0 0 2px var(--accent); }
-  .cell:focus-visible { outline: 3px solid var(--accent); outline-offset: 1px; }
-
-  footer {
-    border-top: 1px dashed var(--glass-line);
-    padding-top: 1rem;
-    color: var(--muted);
-    display: grid;
-    gap: 0.25rem;
-  }
-  footer .sign { font-family: var(--font-display); font-size: 1.2rem; color: var(--ink); }
-
-  /* Thumb bar */
+  /* Thumb dock */
   .dock {
     position: fixed;
     left: 0;
@@ -244,77 +173,70 @@
     z-index: 5;
     padding-left: max(16px, env(safe-area-inset-left, 0px));
     padding-right: max(16px, env(safe-area-inset-right, 0px));
-    padding-block: 0.75rem calc(0.75rem + env(safe-area-inset-bottom, 0px));
-    background: var(--sky);
-    border-top: 1px solid var(--line);
+    padding-block: 0.75rem calc(0.9rem + env(safe-area-inset-bottom, 0px));
+    background: linear-gradient(to top, var(--bg) 70%, transparent);
   }
   .dock .btn {
     display: block;
     width: 100%;
-    max-width: 28rem;
+    max-width: 24rem;
     margin: 0 auto;
-    font: 600 1.05rem/1 var(--font-body);
-    min-height: 3.25rem;
+    font: 700 1.2rem/1 var(--font-body);
+    min-height: 3.4rem;
     border-radius: 999px;
     border: 0;
-    background: var(--accent);
-    color: var(--on-accent);
+    background: var(--pink);
+    color: #FFFFFF;
+    box-shadow: 0 5px 0 var(--pink-deep);
     cursor: pointer;
     touch-action: manipulation;
+    transition: transform 0.08s ease, box-shadow 0.08s ease;
   }
-  .dock .btn:active { filter: brightness(0.95); }
-  .dock .btn:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+  .dock .btn:active { transform: translateY(4px); box-shadow: 0 1px 0 var(--pink-deep); }
+  .dock .btn:focus-visible { outline: 3px dashed var(--ink); outline-offset: 4px; }
 
   @media (prefers-reduced-motion: reduce) {
-    .strip.unfold { animation: none; }
-    .jar-inner, .bar span { transition: none; }
+    .note.pop, .jar.wiggle .jar-inner { animation: none; }
+    .dock .btn { transition: none; }
   }
 </style>
 
 <div class="page">
   <header>
-    <div class="eyebrow">โหลดาวกระดาษ · พับไว้ 100 ดวง</div>
+    <div class="eyebrow">โหลดาวกระดาษ </div>
     <h1>สู้ ๆ นะ น้อง <span class="name">Chertam</span></h1>
-    <p class="lead">ในโหลนี้มีดาวกระดาษ 100 ดวง แต่ละดวงมีข้อความเขียนไว้ข้างใน แตะที่โหลเพื่อหยิบดาวมาอ่านทีละดวงนะหนู</p>
+    <p class="lead">ในโหลนี้มีดาวกระดาษอยู่ แต่ละดวงมีข้อความเขียนไว้ข้างใน แตะที่โหลเพื่อหยิบดาวมาอ่านทีละดวงนะหนู</p>
   </header>
 
   <section class="jar-area">
-    <button class="jar" id="jar" type="button" aria-label="หยิบดาวจากโหล 1 ดวง">
+    <button class="jar" id="jar" type="button" aria-label="หยิบดาวจากโหล">
       <span class="jar-inner">
         <svg class="jar-svg" viewBox="0 0 200 260" aria-hidden="true">
           <path class="glass" d="M62 42 L62 56 Q20 70 20 112 L20 226 Q20 250 46 250 L154 250 Q180 250 180 226 L180 112 Q180 70 138 56 L138 42 Z"/>
-          <path class="shine" d="M34 120 Q34 92 52 80"/>
-          <path class="shine" d="M34 140 L34 200"/>
-          <rect class="lid" x="54" y="14" width="92" height="30" rx="7"/>
-          <rect class="lid-band" x="54" y="24" width="92" height="7"/>
+          <path class="shine" d="M36 122 Q36 96 52 84"/>
+          <path class="shine" d="M36 142 L36 160"/>
+          <rect class="lid" x="52" y="12" width="96" height="34" rx="12"/>
+          <circle class="lid-dot" cx="66" cy="22" r="3"/>
+          <circle class="lid-dot" cx="134" cy="22" r="3"/>
+          <circle class="lid-dot" cx="72" cy="37" r="2.5"/>
+          <circle class="lid-dot" cx="128" cy="37" r="2.5"/>
+          <circle class="eye" cx="86" cy="28" r="3.6"/>
+          <circle class="eye" cx="114" cy="28" r="3.6"/>
+          <path class="smile" d="M94 33 Q100 39 106 33"/>
+          <ellipse class="blush" cx="77" cy="34" rx="5" ry="3"/>
+          <ellipse class="blush" cx="123" cy="34" rx="5" ry="3"/>
+          <path class="bow" d="M150 18 L166 8 L166 30 Z M150 18 L134 8 L134 30 Z"/>
+          <circle class="bow" cx="150" cy="18" r="5"/>
         </svg>
         <span class="pile" id="pile" aria-hidden="true"></span>
       </span>
     </button>
-    <div class="jar-caption" id="jar-caption">เหลือในโหล <b>100</b> ดวง</div>
+    <div class="jar-hint">แตะที่โหลได้เลย</div>
   </section>
 
-  <section class="reader" id="reader" aria-live="polite">
-    <div class="strip" id="strip">
-      <div class="strip-label" id="strip-label">เริ่มตรงนี้</div>
-      <p class="strip-text" id="strip-text">แตะที่โหล หรือกดปุ่มด้านล่าง เพื่อหยิบดาวดวงแรกได้เลย</p>
-    </div>
-    <div class="nav">
-      <button class="nav-btn" id="prev" type="button">‹ ก่อนหน้า</button>
-      <span class="swipe-hint">ปัดซ้ายขวาได้</span>
-      <button class="nav-btn" id="next" type="button">ถัดไป ›</button>
-    </div>
-  </section>
-
-  <section class="progress">
-    <div class="progress-row"><span id="count">อ่านแล้ว <b>0</b> / 100 ดวง</span><span id="percent">0%</span></div>
-    <div class="bar"><span id="bar"></span></div>
-  </section>
-
-  <section class="collection">
-    <h2>สมุดสะสมดาว</h2>
-    <p>ดาวที่อ่านแล้วจะมีสี แตะดวงไหนก็เปิดอ่านดวงนั้นได้</p>
-    <div class="grid" id="grid" role="group" aria-label="ดาวทั้ง 100 ดวง"></div>
+  <section class="note" id="note" aria-live="polite">
+    <span class="star note-star" id="note-star" aria-hidden="true"></span>
+    <p class="note-text" id="note-text">ลองหยิบดาวดวงแรกดูสิ ข้างในมีข้อความรออยู่</p>
   </section>
 
   <footer>
@@ -324,7 +246,7 @@
 </div>
 
 <div class="dock">
-  <button class="btn" id="draw" type="button">หยิบดาวจากโหล 1 ดวง</button>
+  <button class="btn" id="draw" type="button">หยิบดาวอีกดวง</button>
 </div>
 
 <script>
@@ -431,114 +353,64 @@
     "สู้ ๆ นะ น้อง Chertam พี่เป็นกำลังใจให้เสมอ"
   ];
   const TOTAL = MESSAGES.length;
-  const COLORS = ["--p1", "--p2", "--p3", "--p4", "--p5"];
-  const colorOf = i => `var(${COLORS[i % COLORS.length]})`;
-  const STORE_KEY = "chertam-stars-v2";
+  const COLORS = ["--p1", "--p2", "--p3", "--p4", "--p5", "--p6"];
+  const STORE_KEY = "chertam-stars-random";
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   // Decorative pile in jar SVG units (200 x 260): [row center y, stars in row], bottom first.
   const ROWS = [[228, 5], [203, 4], [178, 5], [153, 4], [128, 5], [103, 4]];
-  const PILE = [];
-  ROWS.forEach(([y, n]) => {
-    const start = n === 5 ? 40 : 55;
-    for (let k = 0; k < n; k++) PILE.push([start + k * 30 + ((PILE.length * 37) % 9) - 4, y]);
+  const pile = document.getElementById("pile");
+  let n = 0;
+  ROWS.forEach(([y, count]) => {
+    const start = count === 5 ? 40 : 55;
+    for (let k = 0; k < count; k++, n++) {
+      const s = document.createElement("span");
+      s.className = "star";
+      s.style.left = ((start + k * 30 + (n * 37) % 9 - 4 - 17) / 200 * 100) + "%";
+      s.style.top = ((y - 17) / 260 * 100) + "%";
+      s.style.setProperty("--rot", ((n * 47) % 70 - 35) + "deg");
+      s.style.setProperty("--c", `var(${COLORS[n % COLORS.length]})`);
+      pile.appendChild(s);
+    }
   });
 
-  const $ = id => document.getElementById(id);
-  const strip = $("strip");
-  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-  let read = new Set();
-  let current = -1;
+  // Shuffle-bag: every message shows once before any repeats; remembered per device.
+  let seen = [];
+  let last = -1;
   try {
     const saved = JSON.parse(localStorage.getItem(STORE_KEY) || "null");
-    if (saved && Array.isArray(saved.read)) {
-      read = new Set(saved.read.filter(i => Number.isInteger(i) && i >= 0 && i < TOTAL));
-      if (Number.isInteger(saved.last) && saved.last >= 0 && saved.last < TOTAL) current = saved.last;
-    }
+    if (saved && Array.isArray(saved.seen)) seen = saved.seen.filter(i => Number.isInteger(i) && i >= 0 && i < TOTAL);
+    if (saved && Number.isInteger(saved.last) && saved.last < TOTAL) last = saved.last;
   } catch (e) {}
 
-  const pileStars = PILE.map(([cx, cy], i) => {
-    const s = document.createElement("span");
-    s.className = "star";
-    s.style.left = ((cx - 17) / 200 * 100) + "%";
-    s.style.top = ((cy - 17) / 260 * 100) + "%";
-    s.style.setProperty("--rot", ((i * 47) % 70 - 35) + "deg");
-    s.style.setProperty("--c", colorOf(i));
-    $("pile").appendChild(s);
-    return s;
-  });
+  const note = document.getElementById("note");
+  const jar = document.getElementById("jar");
 
-  const cells = MESSAGES.map((_, i) => {
-    const b = document.createElement("button");
-    b.type = "button";
-    b.className = "cell";
-    b.style.setProperty("--paper", colorOf(i));
-    b.innerHTML = '<span class="star"></span>';
-    b.addEventListener("click", () => { show(i); $("reader").scrollIntoView({ block: "start", behavior: reduceMotion ? "auto" : "smooth" }); });
-    $("grid").appendChild(b);
-    return b;
-  });
-
-  function save() {
-    try { localStorage.setItem(STORE_KEY, JSON.stringify({ read: [...read], last: current })); } catch (e) {}
-  }
-
-  function show(i) {
-    current = i;
-    read.add(i);
-    save();
-    strip.style.setProperty("--paper", colorOf(i));
-    $("strip-label").textContent = `ดวงที่ ${i + 1} / ${TOTAL}`;
-    $("strip-text").textContent = MESSAGES[i];
-    strip.classList.remove("unfold");
-    void strip.offsetWidth;
-    strip.classList.add("unfold");
-    render();
-  }
-
-  function render() {
-    const unread = TOTAL - read.size;
-    const visible = Math.ceil(unread / TOTAL * PILE.length);
-    pileStars.forEach((s, i) => { s.hidden = i >= visible; });
-    $("jar-caption").innerHTML = unread ? `เหลือในโหล <b>${unread}</b> ดวง` : "หยิบครบทุกดวงแล้ว";
-    $("count").innerHTML = unread ? `อ่านแล้ว <b>${read.size}</b> / ${TOTAL} ดวง` : `อ่านครบทั้ง <b>${TOTAL}</b> ดวงแล้ว เก่งมาก!`;
-    const pct = Math.round(read.size / TOTAL * 100);
-    $("percent").textContent = pct + "%";
-    $("bar").style.width = pct + "%";
-    $("draw").textContent = unread ? "หยิบดาวจากโหล 1 ดวง" : "อ่านครบแล้ว สุ่มอ่านซ้ำอีกดวง";
-    cells.forEach((c, i) => {
-      c.classList.toggle("read", read.has(i));
-      c.classList.toggle("current", i === current);
-      c.setAttribute("aria-label", `ดาวดวงที่ ${i + 1}${read.has(i) ? " (อ่านแล้ว)" : ""}`);
-    });
+  function render(i) {
+    const color = `var(${COLORS[Math.floor(Math.random() * COLORS.length)]})`;
+    note.style.setProperty("--c", color);
+    document.getElementById("note-star").style.setProperty("--c", color);
+    document.getElementById("note-text").textContent = MESSAGES[i];
   }
 
   function draw() {
-    const unread = MESSAGES.map((_, i) => i).filter(i => !read.has(i));
-    const pool = unread.length ? unread : MESSAGES.map((_, i) => i).filter(i => i !== current);
-    show(pool[Math.floor(Math.random() * pool.length)]);
+    let pool = MESSAGES.map((_, i) => i).filter(i => !seen.includes(i));
+    if (!pool.length) { seen = []; pool = MESSAGES.map((_, i) => i).filter(i => i !== last); }
+    const i = pool[Math.floor(Math.random() * pool.length)];
+    seen.push(i);
+    last = i;
+    try { localStorage.setItem(STORE_KEY, JSON.stringify({ seen, last })); } catch (e) {}
+    render(i);
+    if (!reduceMotion) {
+      note.classList.remove("pop");
+      jar.classList.remove("wiggle");
+      void note.offsetWidth;
+      note.classList.add("pop");
+      jar.classList.add("wiggle");
+    }
   }
-  const step = d => show(current < 0 ? (d > 0 ? 0 : TOTAL - 1) : (current + d + TOTAL) % TOTAL);
 
-  $("jar").addEventListener("click", draw);
-  $("draw").addEventListener("click", draw);
-  $("prev").addEventListener("click", () => step(-1));
-  $("next").addEventListener("click", () => step(1));
-
-  let touchX = null, touchY = null;
-  strip.addEventListener("touchstart", e => { touchX = e.touches[0].clientX; touchY = e.touches[0].clientY; }, { passive: true });
-  strip.addEventListener("touchend", e => {
-    if (touchX === null) return;
-    const dx = e.changedTouches[0].clientX - touchX;
-    const dy = e.changedTouches[0].clientY - touchY;
-    touchX = null;
-    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) step(dx < 0 ? 1 : -1);
-  });
-
-  if (current >= 0) {
-    strip.style.setProperty("--paper", colorOf(current));
-    $("strip-label").textContent = `ดวงที่ ${current + 1} / ${TOTAL}`;
-    $("strip-text").textContent = MESSAGES[current];
-  }
-  render();
+  jar.addEventListener("click", draw);
+  document.getElementById("draw").addEventListener("click", draw);
+  if (last >= 0) render(last);
 </script>
